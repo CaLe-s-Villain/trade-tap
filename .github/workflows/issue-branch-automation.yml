@@ -1,0 +1,86 @@
+name: Auto-Create Branch on Label Assignment
+
+on:
+  issues:
+    types: [labeled, unlabeled]
+
+jobs:
+  create-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if issue contains `wontfix`
+        id: check-wontfix
+        run: |
+          if [[ "$(jq -r '.issue.labels[].name' "$GITHUB_EVENT_PATH")" == *"wontfix"* ]]; then
+            echo "Branch creation skipped due to wontfix label."
+            exit 0
+          fi
+
+      - name: Extract labels and determine branch type
+        id: determine-branch
+        run: |
+          # Define label hierarchy
+          PRIORITY_LABELS=("hotfix" "ci/cd" "feature" "bugfix" "security" "performance" "documentation" "test")
+
+          # Extract labels from issue
+          LABELS=$(jq -r '.issue.labels[].name' "$GITHUB_EVENT_PATH")
+
+          # Find highest priority label
+          SELECTED_LABEL=""
+          for label in "${PRIORITY_LABELS[@]}"; do
+            if echo "$LABELS" | grep -q "$label"; then
+              SELECTED_LABEL=$label
+              break
+            fi
+          done
+
+          # Find realm label (frontend/backend)
+          if echo "$LABELS" | grep -q "frontend"; then
+            REALM="frontend"
+          elif echo "$LABELS" | grep -q "backend"; then
+            REALM="backend"
+          else
+            echo "No realm label (frontend/backend) found. Exiting."
+            exit 0
+          fi
+
+          # If no valid work type label found, exit
+          if [[ -z "$SELECTED_LABEL" ]]; then
+            echo "No valid work type label found. Exiting."
+            exit 0
+          fi
+
+          # Extract issue number and title
+          ISSUE_NUMBER=$(jq -r '.issue.number' "$GITHUB_EVENT_PATH")
+          ISSUE_TITLE=$(jq -r '.issue.title' "$GITHUB_EVENT_PATH" | tr ' ' '-' | tr '[:upper:]' '[:lower:]')
+
+          # Construct branch name
+          BRANCH_NAME="${REALM}/${SELECTED_LABEL}/${ISSUE_NUMBER}-${ISSUE_TITLE}"
+
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+          echo "Selected branch: $BRANCH_NAME"
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check if branch already exists
+        id: check-branch
+        run: |
+          if git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; then
+            echo "Branch $BRANCH_NAME already exists. No action needed."
+            exit 0
+          fi
+
+      - name: Create and push new branch
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH_NAME"
+          git push https://x-access-token:${{ secrets.ACTIONS_PAT }}@github.com/${{ github.repository }}.git "$BRANCH_NAME"
+
+      - name: Comment on issue with branch info
+        run: |
+          ISSUE_URL=$(jq -r '.issue.html_url' "$GITHUB_EVENT_PATH")
+          curl -s -X POST -H "Authorization: token ${{ secrets.ACTIONS_PAT }}" \
+          -d '{"body": "A new branch has been created for this issue: `'"$BRANCH_NAME"'`"}' \
+          "$ISSUE_URL/comments"
