@@ -1,0 +1,45 @@
+# 🔒 Sensitive files
+.env
+.env.*  # handles .env.development, .env.local, etc.
+
+# 🧠 Dependency directories
+node_modules/
+**/node_modules/
+
+# 🛠 Build output
+dist/
+build/
+*.log
+
+# 🧹 System files
+.DS_Store
+Thumbs.db
+
+# 🐳 Docker
+*.local
+docker-compose.override.yml
+
+# ⚙️ VS Code config
+.vscode/
+.history/
+
+# 🗂 OS-generated
+*.swp
+*.swo
+
+# 🧪 Test coverage
+coverage/
+.nyc_output/
+
+# 🔀 Misc
+*.tgz
+*.lock-wscript
+.pnpm-debug.log
+.yarn-debug.log
+.yarn-error.log
+
+# 💡 EditorConfig backups
+*.bak
+
+# 🚀 Optional GitHub Actions cache
+.github/workflows/*.log
