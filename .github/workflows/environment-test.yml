@@ -1,0 +1,14 @@
+name: Simulate Staging Environment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-to-staging:
+    name: Deploy to simulated staging
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_ENV: staging
+    steps:
+      - name: Echo simulated environment
+        run: echo "🚀 Deploying to $DEPLOY_ENV environment (simulated)"
