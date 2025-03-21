@@ -34,14 +34,19 @@ jobs:
             fi
           done
 
-          if echo "$LABELS" | grep -q "frontend"; then
-            REALM="frontend"
-          elif echo "$LABELS" | grep -q "backend"; then
-            REALM="backend"
-          else
-            echo "❌ No realm label found. Exiting."
-            exit 0
-          fi
+          # ───────────────────────────────────────────────
+          # 🔒 Realm label check (frontend/backend) — currently disabled
+          # Uncomment to require realm labels again
+          # if echo "$LABELS" | grep -q "frontend"; then
+          #   REALM="frontend"
+          # elif echo "$LABELS" | grep -q "backend"; then
+          #   REALM="backend"
+          # else
+          #   echo "❌ No realm label found. Exiting."
+          #   exit 0
+          # fi
+          # ───────────────────────────────────────────────
+
 
           if [[ -z "$SELECTED_LABEL" ]]; then
             echo "❌ No valid work label found. Exiting."
@@ -51,7 +56,7 @@ jobs:
           ISSUE_NUMBER=$(jq -r '.issue.number' "$GITHUB_EVENT_PATH")
           ISSUE_TITLE=$(jq -r '.issue.title' "$GITHUB_EVENT_PATH" | tr ' ' '-' | tr '[:upper:]' '[:lower:]' | tr -cd '[:alnum:]-')
 
-          BRANCH_NAME="${REALM}/${SELECTED_LABEL}/${ISSUE_NUMBER}-${ISSUE_TITLE}"
+          BRANCH_NAME="${SELECTED_LABEL}/${ISSUE_NUMBER}-${ISSUE_TITLE}"
 
           echo "✅ Branch name to be created: $BRANCH_NAME"
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
