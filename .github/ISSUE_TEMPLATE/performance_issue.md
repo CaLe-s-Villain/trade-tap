@@ -2,7 +2,7 @@
 name: "Performance Improvement"
 about: "Optimize code or improve system performance."
 title: "[Performance] "
-labels: ["performance", "optimization"]
+labels: ["performance"]
 assignees: ""
 ---
 
@@ -26,3 +26,11 @@ assignees: ""
 ## Additional Context
 
 <!-- Link to any profiling results, logs, or tests. -->
+
+## Related Issue
+
+<!-- If this update is linked to an existing issue, paste the issue number or URL here. -->
+
+## Milestone
+
+<!-- Assign a milestone if applicable. -->

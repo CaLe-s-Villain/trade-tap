@@ -10,6 +10,10 @@ assignees: ""
 
 <!-- Clearly describe the security concern or vulnerability. -->
 
+## Affected Component
+
+<!-- e.g., Auth middleware, JWT logic, database config -->
+
 ## Steps to Reproduce (If Applicable)
 
 1. Go to '...'
@@ -31,3 +35,11 @@ assignees: ""
 ## Additional Context
 
 <!-- Any references, CVEs, or security advisories. -->
+
+## Related Issue
+
+<!-- If this update is linked to an existing issue, paste the issue number or URL here. -->
+
+## Milestone
+
+<!-- Assign a milestone if applicable. -->

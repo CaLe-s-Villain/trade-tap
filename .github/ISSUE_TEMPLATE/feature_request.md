@@ -2,7 +2,7 @@
 name: "Feature Request"
 about: "Propose a new feature or improvement."
 title: "[Feature] "
-labels: ["enhancement", "feature"]
+labels: ["feature"]
 assignees: ""
 ---
 
@@ -21,3 +21,15 @@ assignees: ""
 ## Additional Context
 
 <!-- Add any screenshots, examples, or references here. -->
+
+## Related Issue
+
+<!-- If this update is linked to an existing issue, paste the issue number or URL here. -->
+
+## Milestone
+
+<!-- Assign a milestone if applicable. -->
+
+## Target Phase
+
+<!-- When should this feature be available? -->
