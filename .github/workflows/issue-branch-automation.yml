@@ -21,7 +21,7 @@ jobs:
         run: |
           echo "🔍 Extracting labels and building branch name..."
           PRIORITY_LABELS=("hotfix" "ci/cd" "feature" "bugfix" "security" "performance" "documentation" "test")
-          LABELS=$(jq -r '.issue.labels[].name' "$GITHUB_EVENT_PATH")
+          LABELS=$(jq -r '.issue.labels[].name' "$GITHUB_EVENT_PATH" | tr '[:upper:]' '[:lower:]')
 
           echo "Labels on issue:"
           echo "$LABELS"
@@ -56,7 +56,9 @@ jobs:
           ISSUE_NUMBER=$(jq -r '.issue.number' "$GITHUB_EVENT_PATH")
           ISSUE_TITLE=$(jq -r '.issue.title' "$GITHUB_EVENT_PATH" | tr ' ' '-' | tr '[:upper:]' '[:lower:]' | tr -cd '[:alnum:]-')
 
-          BRANCH_NAME="${SELECTED_LABEL}/${ISSUE_NUMBER}-${ISSUE_TITLE}"
+          SAFE_LABEL=$(echo "$SELECTED_LABEL" | tr '/' '-')
+          BRANCH_NAME="${SAFE_LABEL}/${ISSUE_NUMBER}-${ISSUE_TITLE}"
+
 
           echo "✅ Branch name to be created: $BRANCH_NAME"
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
@@ -74,6 +76,11 @@ jobs:
 
       - name: Create and push new branch
         run: |
+          if [[ -z "$BRANCH_NAME" ]]; then
+            echo "❌ BRANCH_NAME is empty. Aborting branch creation."
+            exit 1
+          fi
+
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b "$BRANCH_NAME"
