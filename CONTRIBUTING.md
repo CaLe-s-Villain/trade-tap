@@ -267,6 +267,10 @@ We use **ESLint** and **Prettier** to enforce code consistency:
 
 ---
 
+### 📘 Git Guide Need a refresher or stuck on a Git command? Check out our Awesome Git Guide for help with: _ Common commands (branching, merging, pushing, etc.) _ Glossary of terms like `rebase`, `HEAD`, and `upstream` \* Project-specific workflows (feature branches, syncing with `dev`, cleanup
+
+---
+
 ## 🤗 Community Guidelines
 
 We’re building something awesome — together. Please help keep our space welcoming and productive:
