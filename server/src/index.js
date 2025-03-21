@@ -1,7 +1,14 @@
 const dotenv = require("dotenv");
+const app = require("./app");
+const cors = require("cors");
+
 dotenv.config();
 
-const app = require("./app");
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 
 const PORT = process.env.PORT || 5000;
 
