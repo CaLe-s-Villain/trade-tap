@@ -68,7 +68,7 @@ jobs:
             bugfix)        SAFE_LABEL="fix" ;;
             documentation) SAFE_LABEL="docs" ;;
             test)          SAFE_LABEL="test" ;;
-            ci/cd)         SAFE_LABEL="ci" ;;
+            ci/cd)         SAFE_LABEL="ci-cd" ;;
             security)      SAFE_LABEL="sec" ;;
             performance)   SAFE_LABEL="perf" ;;
             *)             SAFE_LABEL=$(echo "$SELECTED_LABEL" | tr '/' '-') ;;
