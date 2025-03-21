@@ -1,4 +1,5 @@
 # Contributing to Trade & Tap
+
 ---
 
 Welcome, and thanks for your interest in contributing to Trade & Tap! Whether it's fixing a bug, improving documentation, or suggesting a new feature — your help is appreciated.
@@ -7,43 +8,66 @@ Welcome, and thanks for your interest in contributing to Trade & Tap! Whether it
 
 ## 🧰 Development Setup
 
-1. **Clone the repo**  
-   ```bash
-   git clone https://github.com/CaLe-s-Villain/trade-tap
-   cd trade-tap
-   ```
+1. **Clone the repo**
 
-2. **Checkout the latest working branch**  
-   ```bash
-   git checkout dev
-   ```
+```bash
 
-3. **Install dependencies**  
-   ```bash
-   cd client && npm install && cd ../server && npm install
-   ```
+git clone https://github.com/CaLe-s-Villain/trade-tap
 
-4. **Set up environment variables**  
-   Copy the example files and fill in missing values:
-   ```bash
-   cp client/.env.example client/.env
-   cp server/.env.example server/.env
-   ```
+cd trade-tap
+
+```
+
+2. **Checkout the latest working branch**
+
+```bash
+
+git checkout dev
+
+```
+
+3. **Install dependencies**
+
+```bash
+
+cd client && npm install && cd ../server && npm install
+
+```
+
+4. **Set up environment variables**
+
+Copy the example files and fill in missing values:
+
+```bash
+
+cp client/.env.example client/.env
+
+cp server/.env.example server/.env
+
+```
 
 5. **Run the app locally**
-   ```bash
-   cd client && npm run dev
-   cd server && npm run dev
-   ```
+
+```bash
+
+cd client && npm run dev
+
+cd server && npm run dev
+
+```
 
 ---
 
 ## 🔄 General Project Workflow
 
 1. All work starts with a GitHub issue. If none exists, create one using the **issue template**.
+
 2. Assign the correct **Realm** and one or more **Labels** (see below).
+
 3. A linked branch will be auto-created from the issue (if configured). If not, create one manually using the naming conventions below.
+
 4. All pull requests should target the `dev` branch.
+
 5. PRs must link to their issue using `Closes #<issue-number>` or similar phrasing.
 
 ---
@@ -53,13 +77,62 @@ Welcome, and thanks for your interest in contributing to Trade & Tap! Whether it
 To create an issue:
 
 1. Go to the [Issues](https://github.com/CaLe-s-Villain/trade-tap/issues) tab.
+
 2. Click **New Issue** and select the appropriate template.
+
 3. Clearly describe:
-   - What the issue is
-   - Steps to reproduce (if applicable)
-   - Suggested solution
+
+- What the issue is
+
+- Steps to reproduce (if applicable)
+
+- Suggested solution
+
 4. Add the appropriate **Realm** and **Label(s)**
+
 5. Assign the issue to a milestone if relevant.
+
+_See the next section Writing Effective Issues Title for additional details_
+
+---
+
+## 📝 Writing Effective Issue Titles
+
+To keep branch names clean and meaningful, issue titles should be:
+
+- **Short but descriptive** (2–6 essential keywords)
+- **Avoid redundant words** like "create", "add", "implement", "for the", "to the"
+- **Use lowercase with dashes** for easy conversion to branch names
+
+### ✅ Good Examples
+
+| Purpose                        | Issue Title              | Resulting Branch Name           |
+
+| ------------------------------ | ------------------------ | ------------------------------- |
+
+| Add .env.example files         | `env-example-files`      | `docs/6-env-example-files`      |
+
+| Fix email validation bug       | `email-validation-bug`   | `bugfix/8-email-validation-bug` |
+
+| Add login authentication       | `login-auth`             | `feat/12-login-auth`            |
+
+| Improve homepage layout        | `homepage-layout-update` | `ui/14-homepage-layout-update`  |
+
+| Write tests for auth endpoints | `auth-endpoint-tests`    | `test/21-auth-endpoint-tests`   |
+
+### 🚫 Avoid
+
+| Issue Title                             | Why it's bad                           |
+
+| --------------------------------------- | -------------------------------------- |
+
+| `Create .env.example files for the app` | Too long, includes unnecessary words   |
+
+| `Add login functionality to user auth`  | Redundant with label, overly verbose   |
+
+| `Fix bug where email isn’t validated`   | Could be shortened to just key concept |
+
+> When in doubt, think: "If this title became part of a branch name, would it still be readable and useful?"
 
 ---
 
@@ -68,22 +141,32 @@ To create an issue:
 We use **Realms** to define what area of the codebase an issue affects, and **Labels** to describe the type of work.
 
 ### 🧭 Realms
+
 Apply one Realm per issue or PR:
+
 - `Backend`
 - `Frontend`
 - `DevOps`
 
 ### 🏷️ Labels
 
-| Label           | Alias   | Description                                                   |
-|----------------|---------|---------------------------------------------------------------|
-| `bugfix`        | `fix`   | Fixes something that is broken                                |
-| `CI/CD`         | `ci-cd` | GitHub Actions, workflows, or deployment-related changes       |
-| `documentation` | `docs`  | Internal or user-facing documentation updates                 |
-| `feature`       | `feat`  | New user-facing functionality or internal features            |
-| `performance`   | `perf`  | Optimizations or performance improvements                     |
-| `security`      | `sec`   | Security fixes, permission changes, or vulnerability patches  |
-| `test`          | `test`  | Unit, integration, or end-to-end test additions/updates       |
+| Label           | Alias   | Description                                                  |
+
+| --------------- | ------- | ------------------------------------------------------------ |
+
+| `bugfix`        | `fix`   | Fixes something that is broken                               |
+
+| `CI/CD`         | `ci-cd` | GitHub Actions, workflows, or deployment-related changes     |
+
+| `documentation` | `docs`  | Internal or user-facing documentation updates                |
+
+| `feature`       | `feat`  | New user-facing functionality or internal features           |
+
+| `performance`   | `perf`  | Optimizations or performance improvements                    |
+
+| `security`      | `sec`   | Security fixes, permission changes, or vulnerability patches |
+
+| `test`          | `test`  | Unit, integration, or end-to-end test additions/updates      |
 
 > ℹ️ `wontfix` is internal-use only and should not be applied by contributors.
 
@@ -97,15 +180,23 @@ All branches should start from the `dev` branch and follow this format:
 <alias>/<short-description>
 ```
 
-| Label           | Alias   | Example Branch Name           |
-|----------------|---------|-------------------------------|
-| bugfix          | `fix`   | `fix/login-redirect`          |
-| CI/CD           | `ci-cd` | `ci-cd/update-dockerfile`     |
-| documentation   | `docs`  | `docs/setup-guide-update`     |
-| feature         | `feat`  | `feat/product-search-filter`  |
-| performance     | `perf`  | `perf/db-index-optimizations` |
-| security        | `sec`   | `sec/auth-token-hardening`    |
-| test            | `test`  | `test/api-auth-tests`         |
+| Label         | Alias   | Example Branch Name           |
+
+| ------------- | ------- | ----------------------------- |
+
+| bugfix        | `fix`   | `fix/login-redirect`          |
+
+| CI/CD         | `ci-cd` | `ci-cd/update-dockerfile`     |
+
+| documentation | `docs`  | `docs/setup-guide-update`     |
+
+| feature       | `feat`  | `feat/product-search-filter`  |
+
+| performance   | `perf`  | `perf/db-index-optimizations` |
+
+| security      | `sec`   | `sec/auth-token-hardening`    |
+
+| test          | `test`  | `test/api-auth-tests`         |
 
 > Note: If the issue didn’t auto-generate a branch, manually create one and link it in the GitHub issue’s "Development" section.
 
@@ -114,14 +205,18 @@ All branches should start from the `dev` branch and follow this format:
 ## ✅ Commit Messages
 
 Use clear, descriptive commit messages following the format:
+
 ```
 <alias>: short description
 ```
 
 Examples:
+
 ```
 fix: correct login redirect behavior
+
 docs: update API authentication guide
+
 feat: add search filters to product listing
 ```
 
@@ -130,16 +225,23 @@ feat: add search filters to product listing
 ## 🤝 Pull Request Guidelines
 
 1. Sync with the latest `dev` branch:
-   ```bash
-   git pull origin dev
-   ```
+
+```bash
+
+git pull origin dev
+
+```
 
 2. Push your branch:
-   ```bash
-   git push origin <your-branch-name>
-   ```
+
+```bash
+
+git push origin <your-branch-name>
+
+```
 
 3. Open a pull request **into `dev`** with a clear title and description.
+
 4. Link the associated issue using `Closes #<issue-number>`.
 
 ---
