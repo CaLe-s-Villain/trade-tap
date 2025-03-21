@@ -19,13 +19,13 @@ jobs:
       - name: Extract labels and determine branch type
         id: determine-branch
         run: |
-          # Define label hierarchy
+          echo "🔍 Extracting labels and building branch name..."
           PRIORITY_LABELS=("hotfix" "ci/cd" "feature" "bugfix" "security" "performance" "documentation" "test")
-
-          # Extract labels from issue
           LABELS=$(jq -r '.issue.labels[].name' "$GITHUB_EVENT_PATH")
 
-          # Find highest priority label
+          echo "Labels on issue:"
+          echo "$LABELS"
+
           SELECTED_LABEL=""
           for label in "${PRIORITY_LABELS[@]}"; do
             if echo "$LABELS" | grep -q "$label"; then
@@ -34,31 +34,27 @@ jobs:
             fi
           done
 
-          # Find realm label (frontend/backend)
           if echo "$LABELS" | grep -q "frontend"; then
             REALM="frontend"
           elif echo "$LABELS" | grep -q "backend"; then
             REALM="backend"
           else
-            echo "No realm label (frontend/backend) found. Exiting."
+            echo "❌ No realm label found. Exiting."
             exit 0
           fi
 
-          # If no valid work type label found, exit
           if [[ -z "$SELECTED_LABEL" ]]; then
-            echo "No valid work type label found. Exiting."
+            echo "❌ No valid work label found. Exiting."
             exit 0
           fi
 
-          # Extract issue number and title
           ISSUE_NUMBER=$(jq -r '.issue.number' "$GITHUB_EVENT_PATH")
-          ISSUE_TITLE=$(jq -r '.issue.title' "$GITHUB_EVENT_PATH" | tr ' ' '-' | tr '[:upper:]' '[:lower:]')
+          ISSUE_TITLE=$(jq -r '.issue.title' "$GITHUB_EVENT_PATH" | tr ' ' '-' | tr '[:upper:]' '[:lower:]' | tr -cd '[:alnum:]-')
 
-          # Construct branch name
           BRANCH_NAME="${REALM}/${SELECTED_LABEL}/${ISSUE_NUMBER}-${ISSUE_TITLE}"
 
+          echo "✅ Branch name to be created: $BRANCH_NAME"
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
-          echo "Selected branch: $BRANCH_NAME"
 
       - name: Checkout repository
         uses: actions/checkout@v4
