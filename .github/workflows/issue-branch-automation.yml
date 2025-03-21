@@ -34,31 +34,47 @@ jobs:
             fi
           done
 
-          # ───────────────────────────────────────────────
-          # 🔒 Realm label check (frontend/backend) — currently disabled
-          # Uncomment to require realm labels again
-          # if echo "$LABELS" | grep -q "frontend"; then
-          #   REALM="frontend"
-          # elif echo "$LABELS" | grep -q "backend"; then
-          #   REALM="backend"
-          # else
-          #   echo "❌ No realm label found. Exiting."
-          #   exit 0
-          # fi
-          # ───────────────────────────────────────────────
-
-
           if [[ -z "$SELECTED_LABEL" ]]; then
             echo "❌ No valid work label found. Exiting."
             exit 0
           fi
 
           ISSUE_NUMBER=$(jq -r '.issue.number' "$GITHUB_EVENT_PATH")
-          ISSUE_TITLE=$(jq -r '.issue.title' "$GITHUB_EVENT_PATH" | tr ' ' '-' | tr '[:upper:]' '[:lower:]' | tr -cd '[:alnum:]-')
+          ISSUE_TITLE_RAW=$(jq -r '.issue.title' "$GITHUB_EVENT_PATH")
+          STOP_WORDS=("create" "add" "fix" "update" "for" "to" "the" "a" "an" "of" "with" "is" "on" "in")
 
-          SAFE_LABEL=$(echo "$SELECTED_LABEL" | tr '/' '-')
-          BRANCH_NAME="${SAFE_LABEL}/${ISSUE_NUMBER}-${ISSUE_TITLE}"
+          # Normalize title
+          CLEAN_TITLE=$(echo "$ISSUE_TITLE_RAW" | tr '[:upper:]' '[:lower:]')
 
+          # Replace spaces and non-alphanumeric characters
+          WORDS=($(echo "$CLEAN_TITLE" | tr -cd '[:alnum:] [:space:]-' | tr ' ' '\n'))
+
+          # Filter stopwords and shorten
+          SHORTENED=()
+          for word in "${WORDS[@]}"; do
+            skip=false
+            for stop in "${STOP_WORDS[@]}"; do
+              [[ "$word" == "$stop" ]] && skip=true && break
+            done
+            $skip || SHORTENED+=("$word")
+            [[ ${#SHORTENED[@]} -ge 4 ]] && break
+          done
+
+          SLUG=$(IFS=- ; echo "${SHORTENED[*]}")
+
+          # Map full label to short alias
+          case "$SELECTED_LABEL" in
+            feature)       SAFE_LABEL="feat" ;;
+            bugfix)        SAFE_LABEL="fix" ;;
+            documentation) SAFE_LABEL="docs" ;;
+            test)          SAFE_LABEL="test" ;;
+            ci/cd)         SAFE_LABEL="ci" ;;
+            security)      SAFE_LABEL="sec" ;;
+            performance)   SAFE_LABEL="perf" ;;
+            *)             SAFE_LABEL=$(echo "$SELECTED_LABEL" | tr '/' '-') ;;
+          esac
+
+          BRANCH_NAME="${SAFE_LABEL}/${ISSUE_NUMBER}-${SLUG}"
 
           echo "✅ Branch name to be created: $BRANCH_NAME"
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
@@ -88,7 +104,5 @@ jobs:
 
       - name: Comment on issue with branch info
         run: |
-          ISSUE_URL=$(jq -r '.issue.html_url' "$GITHUB_EVENT_PATH")
-          curl -s -X POST -H "Authorization: token ${{ secrets.ACTIONS_PAT }}" \
-          -d '{"body": "A new branch has been created for this issue: `'"$BRANCH_NAME"'`"}' \
-          "$ISSUE_URL/comments"
+          ISSUE_URL=$(jq -r '.issue.comments_url' "$GITHUB_EVENT_PATH")
+          curl -s -X POST -H "Authorization: token ${{ secrets.ACTIONS_PAT }}"           -d '{"body": "🚀 A new branch has been created: `'"$BRANCH_NAME"'`"}'           "$ISSUE_URL"
