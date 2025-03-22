@@ -4,10 +4,14 @@
     "lint:client": "eslint client/src --ext .js,.jsx",
     "lint:server": "eslint server/src --ext .js",
     "lint:fix": "npm run lint:client -- --fix && npm run lint:server -- --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "format:check": "prettier . --check",
+    "format:client": "prettier --check client/src",
+    "format:server": "prettier --check server/src",
+    "scripts:help": "echo 'Available scripts: lint, lint:fix, format, format:check'"
   },
   "devDependencies": {
-    "eslint": "^8.57.1",
+    "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^10.1.1",

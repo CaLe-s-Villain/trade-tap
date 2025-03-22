@@ -1,0 +1,31 @@
+name: Lint
+
+on:
+  pull_request:
+    branches: [main, dev, stage]
+  push:
+    branches: [main, dev, stage]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install client and server dependencies
+        run: |
+          cd client && npm ci
+          cd ../server && npm ci
+          cd ..
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Run root lint command
+        run: npm run lint

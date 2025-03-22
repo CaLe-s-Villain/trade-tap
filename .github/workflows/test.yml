@@ -1,0 +1,20 @@
+name: Placeholder Test Workflow
+
+on:
+  pull_request:
+    branches: [main, dev, stage]
+  push:
+    branches: [main, dev, stage]
+
+jobs:
+  client-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Placeholder - client tests
+        run: echo "Client tests not yet implemented."
+
+  server-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Placeholder - server tests
+        run: echo "Server tests not yet implemented."
