@@ -260,9 +260,8 @@ git rebase origin/dev
 ### Commit and push work
 
 ```bash
-git add .
-git commit -m "feat: add login auth logic"
-git push -u origin feat/22-login-auth
+git commit -a -m "feat: add login auth logic"
+git push
 ```
 
 ### Open a PR to `dev` and link the issue
