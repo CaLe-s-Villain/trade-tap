@@ -8,7 +8,7 @@ function App() {
   const [message, setMessage] = useState("...loading");
 
   useEffect(() => {
-    console.log("Fetching from:", `${import.meta.env.VITE_API_URL}/api/`);
+    console.log("Fetching from:", `${import.meta.env.VITE_API_URL}/api`);
 
     fetch(`${import.meta.env.VITE_API_URL}/api/`)
       .then((res) => res.json())
