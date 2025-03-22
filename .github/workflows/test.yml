@@ -1,0 +1,32 @@
+name: Test
+
+on:
+  pull_request:
+    branches: [main, dev]
+  push:
+    branches: [main, dev]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: [client, server]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: |
+          cd ${{ matrix.app }}
+          npm ci
+
+      - name: Run Tests
+        run: |
+          cd ${{ matrix.app }}
+          npm test

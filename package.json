@@ -4,7 +4,8 @@
     "lint:client": "eslint client/src --ext .js,.jsx",
     "lint:server": "eslint server/src --ext .js",
     "lint:fix": "npm run lint:client -- --fix && npm run lint:server -- --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "format:check": "prettier . --check"
   },
   "devDependencies": {
     "eslint": "^8.57.1",
