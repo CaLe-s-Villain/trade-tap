@@ -24,5 +24,8 @@ jobs:
           cd ../server && npm ci
           cd ..
 
+      - name: Install root dependencies
+        run: npm ci
+
       - name: Run root lint command
         run: npm run lint
