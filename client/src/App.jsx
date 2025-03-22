@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import reactLogo from './assets/react.svg';
-import viteLogo from '../../../../../../vite.svg';
+// eslint-disable-next-line import/no-unresolved, import/no-absolute-path
+import viteLogo from '/vite.svg';
+
 import './App.css';
 
 function App() {
@@ -8,14 +10,11 @@ function App() {
   const [message, setMessage] = useState('...loading');
 
   useEffect(() => {
-    console.log('Fetching from:', `${import.meta.env.VITE_API_URL}/api`);
-
     fetch(`${import.meta.env.VITE_API_URL}/api/`)
       .then((res) => res.json())
       .then((data) => setMessage(data.message))
       .catch((err) => {
-        console.error('API call failed:', err);
-        setMessage('Backend unreachable 😢');
+        setMessage(`Backend unreachable 😢: ${err}`);
       });
   }, []);
 
@@ -31,7 +30,10 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        <button
+          type="button"
+          onClick={() => setCount((prevCount) => prevCount + 1)}
+        >
           count is {count}
         </button>
         <p>
