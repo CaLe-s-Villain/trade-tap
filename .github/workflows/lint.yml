@@ -18,8 +18,11 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install client and server dependencies
+        run: |
+          cd client && npm ci
+          cd ../server && npm ci
+          cd ..
 
-      - name: Run lint
+      - name: Run root lint command
         run: npm run lint
