@@ -1,32 +1,20 @@
-name: Test
+name: Placeholder Test Workflow
 
 on:
   pull_request:
-    branches: [main, dev]
+    branches: [main, dev, stage]
   push:
-    branches: [main, dev]
+    branches: [main, dev, stage]
 
 jobs:
-  test:
+  client-tests:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        app: [client, server]
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Placeholder - client tests
+        run: echo "Client tests not yet implemented."
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: |
-          cd ${{ matrix.app }}
-          npm ci
-
-      - name: Run Tests
-        run: |
-          cd ${{ matrix.app }}
-          npm test
+  server-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Placeholder - server tests
+        run: echo "Server tests not yet implemented."

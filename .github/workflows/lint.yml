@@ -2,16 +2,13 @@ name: Lint
 
 on:
   pull_request:
-    branches: [main, dev]
+    branches: [main, dev, stage]
   push:
-    branches: [main, dev]
+    branches: [main, dev, stage]
 
 jobs:
   lint:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        app: [client, server]
 
     steps:
       - uses: actions/checkout@v4
@@ -22,11 +19,7 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: |
-          cd ${{ matrix.app }}
-          npm ci
+        run: npm ci
 
-      - name: Run ESLint
-        run: |
-          cd ${{ matrix.app }}
-          npm run lint
+      - name: Run lint
+        run: npm run lint

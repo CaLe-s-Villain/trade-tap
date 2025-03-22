@@ -1,17 +1,14 @@
-name: Prettier Check
+name: Prettier Format Check
 
 on:
   pull_request:
-    branches: [main, dev]
+    branches: [main, dev, stage]
   push:
-    branches: [main, dev]
+    branches: [main, dev, stage]
 
 jobs:
   prettier:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        app: [client, server]
 
     steps:
       - uses: actions/checkout@v4
@@ -22,11 +19,7 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: |
-          cd ${{ matrix.app }}
-          npm ci
+        run: npm ci
 
-      - name: Run Prettier
-        run: |
-          cd ${{ matrix.app }}
-          npm run format:check
+      - name: Run Prettier Check
+        run: npm run format:check
