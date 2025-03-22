@@ -1,9 +1,9 @@
 ---
-name: "CI/CD Improvement"
-about: "Improve GitHub Actions, Docker, or deployment setup."
-title: "[CI/CD] "
-labels: ["ci/cd", "devops"]
-assignees: ""
+name: 'CI/CD Improvement'
+about: 'Improve GitHub Actions, Docker, or deployment setup.'
+title: '[CI/CD] '
+labels: ['ci/cd', 'devops']
+assignees: ''
 ---
 
 ## Current Issue

@@ -1,9 +1,9 @@
 ---
-name: "Testing & QA"
-about: "Define test cases and track testing progress."
-title: "[Testing] "
-labels: ["testing", "qa"]
-assignees: ""
+name: 'Testing & QA'
+about: 'Define test cases and track testing progress.'
+title: '[Testing] '
+labels: ['testing', 'qa']
+assignees: ''
 ---
 
 ## Test Plan
@@ -23,8 +23,6 @@ assignees: ""
 ## Additional Context
 
 <!-- Any extra notes for the testing process. -->
-
-
 
 ## Related Issue
 

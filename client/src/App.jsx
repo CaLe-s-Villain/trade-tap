@@ -1,31 +1,31 @@
-import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import { useEffect, useState } from 'react';
+import reactLogo from './assets/react.svg';
+import viteLogo from '../../../../../../vite.svg';
+import './App.css';
 
 function App() {
   const [count, setCount] = useState(0);
-  const [message, setMessage] = useState("...loading");
+  const [message, setMessage] = useState('...loading');
 
   useEffect(() => {
-    console.log("Fetching from:", `${import.meta.env.VITE_API_URL}/api`);
+    console.log('Fetching from:', `${import.meta.env.VITE_API_URL}/api`);
 
     fetch(`${import.meta.env.VITE_API_URL}/api/`)
       .then((res) => res.json())
       .then((data) => setMessage(data.message))
       .catch((err) => {
-        console.error("API call failed:", err);
-        setMessage("Backend unreachable 😢");
+        console.error('API call failed:', err);
+        setMessage('Backend unreachable 😢');
       });
   }, []);
 
   return (
     <>
       <div>
-        <a href="https://vite.dev" target="_blank">
+        <a href="https://vite.dev" target="_blank" rel="noreferrer">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
-        <a href="https://react.dev" target="_blank">
+        <a href="https://react.dev" target="_blank" rel="noreferrer">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
