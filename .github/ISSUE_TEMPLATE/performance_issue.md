@@ -1,9 +1,9 @@
 ---
-name: "Performance Improvement"
-about: "Optimize code or improve system performance."
-title: "[Performance] "
-labels: ["performance"]
-assignees: ""
+name: 'Performance Improvement'
+about: 'Optimize code or improve system performance.'
+title: '[Performance] '
+labels: ['performance']
+assignees: ''
 ---
 
 ## Current Performance Issue

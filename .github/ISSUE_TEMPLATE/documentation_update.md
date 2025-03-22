@@ -1,9 +1,9 @@
 ---
-name: "Documentation Update"
-about: "Update or improve documentation."
-title: "[Docs] "
-labels: ["documentation"]
-assignees: ""
+name: 'Documentation Update'
+about: 'Update or improve documentation.'
+title: '[Docs] '
+labels: ['documentation']
+assignees: ''
 ---
 
 ## File or Page

@@ -1,9 +1,9 @@
 ---
-name: "Security Issue"
-about: "Report a security vulnerability or improvement."
-title: "[Security] "
-labels: ["security"]
-assignees: ""
+name: 'Security Issue'
+about: 'Report a security vulnerability or improvement.'
+title: '[Security] '
+labels: ['security']
+assignees: ''
 ---
 
 ## Description

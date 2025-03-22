@@ -1,0 +1,20 @@
+{
+  "scripts": {
+    "lint": "npm run lint:client && npm run lint:server",
+    "lint:client": "eslint client/src --ext .js,.jsx",
+    "lint:server": "eslint server/src --ext .js",
+    "lint:fix": "npm run lint:client -- --fix && npm run lint:server -- --fix",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-react": "^7.37.4",
+    "prettier": "^3.5.3"
+  }
+}

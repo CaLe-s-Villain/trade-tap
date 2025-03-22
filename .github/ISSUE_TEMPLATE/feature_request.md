@@ -1,9 +1,9 @@
 ---
-name: "Feature Request"
-about: "Propose a new feature or improvement."
-title: "[Feature] "
-labels: ["feature"]
-assignees: ""
+name: 'Feature Request'
+about: 'Propose a new feature or improvement.'
+title: '[Feature] '
+labels: ['feature']
+assignees: ''
 ---
 
 ## Summary

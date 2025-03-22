@@ -1,9 +1,9 @@
 ---
-name: "Bug Report"
-about: "Report an issue with expected vs actual behavior."
-title: "[Bug] "
-labels: ["bug"]
-assignees: ""
+name: 'Bug Report'
+about: 'Report an issue with expected vs actual behavior.'
+title: '[Bug] '
+labels: ['bug']
+assignees: ''
 ---
 
 ## Description
