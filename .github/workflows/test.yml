@@ -70,6 +70,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Write client/.env for frontend
+        run: |
+          echo "VITE_API_URL=http://localhost:5001/api" >> .env
+
       - name: Write server/.env file from GitHub secrets
         run: |
           echo "POSTGRES_USER=$POSTGRES_USER" >> ../server/.env
