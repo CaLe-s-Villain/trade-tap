@@ -83,7 +83,7 @@ jobs:
       - name: Start full app via Docker Compose
         run: |
           docker compose up -d
-          sleep 10 # Wait for frontend/backend
+          sleep 20 # Wait for frontend/backend
 
       - name: Run Cypress tests
         run: npx cypress run
