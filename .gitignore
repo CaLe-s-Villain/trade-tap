@@ -46,3 +46,6 @@ coverage/
 
 # .dockerignore and .gitignore
 server/.migrated.lock
+
+# Vite
+.vite
