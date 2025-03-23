@@ -18,6 +18,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api', (req, res) => {
+  console.log('hi mom');
   res.json({ message: 'Hello from backend' });
 });
 

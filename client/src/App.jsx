@@ -17,6 +17,7 @@ function App() {
         console.log(err);
         setMessage('Backend unreachable 😢');
       });
+    console.log('Hi mommy');
   }, []);
 
   return (
