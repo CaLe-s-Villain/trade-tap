@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import API_URL from './utils/env';
 import reactLogo from './assets/react.svg';
 // eslint-disable-next-line import/no-unresolved, import/no-absolute-path
 import viteLogo from '/vite.svg';
@@ -10,7 +11,7 @@ function App() {
   const [message, setMessage] = useState('...loading');
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/message`)
+    fetch(`${API_URL}/api/message`)
       .then((res) => res.json())
       .then((data) => setMessage(data.text))
       .catch((err) => {
