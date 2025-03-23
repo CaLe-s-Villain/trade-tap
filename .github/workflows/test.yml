@@ -1,4 +1,4 @@
-name: Placeholder Test Workflow
+name: Test Suite
 
 on:
   pull_request:
@@ -8,13 +8,73 @@ on:
 
 jobs:
   client-tests:
+    name: Client Unit Tests (Jest)
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
     steps:
-      - name: Placeholder - client tests
-        run: echo "Client tests not yet implemented."
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run client tests (Jest)
+        run: npm run test -- --ci --coverage
 
   server-tests:
+    name: Server Unit Tests (Jest)
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
     steps:
-      - name: Placeholder - server tests
-        run: echo "Server tests not yet implemented."
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run server tests (Jest)
+        run: npm run test -- --ci --coverage
+
+  client-e2e:
+    name: Client E2E Tests (Cypress)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start full app via Docker Compose
+        run: |
+          docker compose up -d
+          sleep 10 # Wait for frontend/backend
+
+      - name: Run Cypress tests
+        run: npx cypress run
+
+      - name: Upload Cypress videos (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos
+          path: client/cypress/videos
