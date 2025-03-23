@@ -43,3 +43,6 @@ coverage/
 
 # 🚀 Optional GitHub Actions cache
 .github/workflows/*.log
+
+# .dockerignore and .gitignore
+server/.migrated.lock
