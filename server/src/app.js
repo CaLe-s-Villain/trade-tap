@@ -3,6 +3,8 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 
+const { Message } = require('./models');
+
 app.use(
   cors({
     origin: 'http://localhost:5173',
@@ -17,6 +19,11 @@ app.get('/', (req, res) => {
 
 app.get('/api', (req, res) => {
   res.json({ message: 'Hello from backend' });
+});
+
+app.get('/api/message', async (req, res) => {
+  const msg = await Message.findOne();
+  res.json({ text: msg?.text || 'No message found' });
 });
 
 module.exports = app;

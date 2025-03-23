@@ -13,6 +13,3 @@ RUN npm install
 
 # Expose internal port used by Express
 EXPOSE 5000
-
-# Start the dev server with nodemon (restarts on file changes)
-CMD ["npm", "run", "dev"]
