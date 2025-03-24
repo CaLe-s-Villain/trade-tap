@@ -1,75 +1,39 @@
-version: '3.8'
-
+# ===================================
+# docker-compose.e2e.yml (E2E Testing)
+# ===================================
 services:
-  client:
-    build: ./client
-    ports:
-      - '5173:5173'
-    environment:
-      - NODE_ENV=development
-      - VITE_API_URL=http://server:5000/api
-    env_file:
-      - ./client/.env
-    volumes:
-      - ./client:/app
-      - /app/node_modules
-    command: npm run dev
-    depends_on:
-      - server
-    networks:
-      - app-network
-
   server:
-    build: ./server
+    command: npm run dev
     ports:
       - '5000:5000'
-    environment:
-      - NODE_ENV=development
     env_file:
-      - ./server/.env
+      - ./server/.env.e2e
     volumes:
       - ./server:/app
       - /app/node_modules
-    command: npm run dev
-    depends_on:
-      - db
-    networks:
-      - app-network
 
-  db:
-    image: postgres:latest
-    container_name: tradetap_db
+  client:
+    command: npm run dev
     ports:
-      - '5432:5432'
+      - '5173:5173'
+    env_file:
+      - ./client/.env.e2e
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      - VITE_API_URL=${VITE_API_URL}
     volumes:
-      - pgdata:/var/lib/postgresql/data
-    restart: unless-stopped
-    networks:
-      - app-network
+      - ./client:/app
+      - /app/node_modules
 
   cypress:
     build:
       context: ./client
       dockerfile: Dockerfile.e2e
     working_dir: /app
-    command: npx cypress run
+    command: npx cypress run --exit
     depends_on:
       - client
     environment:
-      - CYPRESS_BASE_URL=http://client:5173
+      - CYPRESS_BASE_URL=${CYPRESS_BASE_URL}
     volumes:
       - ./client:/app
       - /app/node_modules
-    networks:
-      - app-network
-
-volumes:
-  pgdata:
-
-networks:
-  app-network:
-    driver: bridge

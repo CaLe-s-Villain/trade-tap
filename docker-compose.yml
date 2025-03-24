@@ -1,34 +1,41 @@
+# =======================
+# docker-compose.yml (BASE)
+# =======================
 services:
   db:
     image: postgres:16
-    ports:
-      - '5433:5432'
     env_file:
-      - ./server/.env
+      - .env
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: trade_tap
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - trade-tap_pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
 
   server:
     build: ./server
-    ports:
-      - '5001:5001'
     env_file:
       - ./server/.env
     depends_on:
       - db
+    networks:
+      - app-network
 
   client:
     build: ./client
-    ports:
-      - '5173:5173'
     env_file:
       - ./client/.env
     depends_on:
       - server
+    networks:
+      - app-network
 
 volumes:
-  trade-tap_pgdata:
+  pgdata:
+
+networks:
+  app-network:
+    driver: bridge
