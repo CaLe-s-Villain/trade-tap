@@ -72,7 +72,7 @@ jobs:
 
       - name: Write client/.env for frontend
         run: |
-          echo "VITE_API_URL=http://backend:5001/api" >> .env
+          echo "VITE_API_URL=http://localhost:5001/api" >> .env
 
       - name: Write server/.env file from GitHub secrets
         run: |

@@ -7,18 +7,22 @@ services:
       - '5173:5173'
     environment:
       - NODE_ENV=development
+      - VITE_API_URL=http://server:5000/api
     env_file:
       - ./client/.env
     volumes:
       - ./client:/app
       - /app/node_modules
+    command: npm run dev
     depends_on:
       - server
+    networks:
+      - app-network
 
   server:
     build: ./server
     ports:
-      - '5001:5000' # Host:Container
+      - '5000:5000'
     environment:
       - NODE_ENV=development
     env_file:
@@ -26,10 +30,11 @@ services:
     volumes:
       - ./server:/app
       - /app/node_modules
-    restart: unless-stopped
+    command: npm run dev
     depends_on:
       - db
-    command: sh -c "npx sequelize-cli db:migrate && npm run dev"
+    networks:
+      - app-network
 
   db:
     image: postgres:latest
@@ -43,6 +48,28 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: unless-stopped
+    networks:
+      - app-network
+
+  cypress:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.e2e
+    working_dir: /app
+    command: npx cypress run
+    depends_on:
+      - client
+    environment:
+      - CYPRESS_BASE_URL=http://client:5173
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    networks:
+      - app-network
 
 volumes:
   pgdata:
+
+networks:
+  app-network:
+    driver: bridge
