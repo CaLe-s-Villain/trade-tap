@@ -8,7 +8,7 @@
     "sequelize": "^6.37.6"
   },
   "scripts": {
-    "dev": "nodemon src/start.js",
+    "dev": "nodemon src/index.js",
     "migrate": "npx sequelize-cli db:migrate",
     "migration:generate": "npx sequelize-cli migration:generate --name",
     "migrate:undo": "npx sequelize-cli db:migrate:undo",

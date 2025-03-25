@@ -1,39 +1,24 @@
-# ===================================
-# docker-compose.e2e.yml (E2E Testing)
-# ===================================
+# docker-compose.e2e
 services:
-  server:
-    command: npm run dev
-    ports:
-      - '5000:5000'
-    env_file:
-      - ./server/.env.e2e
-    volumes:
-      - ./server:/app
-      - /app/node_modules
-
   client:
     command: npm run dev
-    ports:
-      - '5173:5173'
-    env_file:
-      - ./client/.env.e2e
-    environment:
-      - VITE_API_URL=${VITE_API_URL}
-    volumes:
-      - ./client:/app
-      - /app/node_modules
+
+  server:
+    command: npm run dev
 
   cypress:
     build:
       context: ./client
       dockerfile: Dockerfile.e2e
     working_dir: /app
-    command: npx cypress run --exit
     depends_on:
-      - client
+      client:
+        condition: service_started
+      server:
+        condition: service_healthy
+    entrypoint: []
     environment:
-      - CYPRESS_BASE_URL=${CYPRESS_BASE_URL}
+      - CYPRESS_BASE_URL=http://client:5173
     volumes:
       - ./client:/app
       - /app/node_modules

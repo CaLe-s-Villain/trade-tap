@@ -1,6 +1,4 @@
-# =======================
-# docker-compose.yml (BASE)
-# =======================
+# docker-compose.yml
 services:
   db:
     image: postgres:16
@@ -23,6 +21,11 @@ services:
       - db
     networks:
       - app-network
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:5001/health']
+      interval: 5s
+      timeout: 2s
+      retries: 10
 
   client:
     build: ./client
@@ -32,6 +35,11 @@ services:
       - server
     networks:
       - app-network
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:5173']
+      interval: 5s
+      timeout: 2s
+      retries: 20
 
 volumes:
   pgdata:

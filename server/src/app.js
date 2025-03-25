@@ -26,4 +26,8 @@ app.get('/api/message', async (req, res) => {
   res.json({ text: msg?.text || 'No message found' });
 });
 
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
 module.exports = app;
