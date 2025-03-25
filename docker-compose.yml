@@ -12,6 +12,12 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - app-network
+    healthcheck: # make sure db is ready before migration
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      retries: 5
+      start_period: 5s
+      timeout: 2s
 
   server:
     build: ./server

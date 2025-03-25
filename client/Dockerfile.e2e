@@ -5,9 +5,15 @@ WORKDIR /app
 COPY . .
 
 RUN npm ci
+
+# 👇 Add curl so we can test connectivity
+RUN apt-get update && apt-get install -y curl
+
 RUN npm install -g wait-on
 
 ENTRYPOINT []
 
-CMD ["sh", "-c", "echo '🧪 Starting Cypress E2E Tests...' && wait-on http://host.docker.internal:5173 && npx cypress run --config baseUrl=http://host.docker.internal:5173"]
+CMD ["sh", "-c", "echo '🧪 Starting Cypress E2E Tests...' && wait-on -v http://client:5173 && npx cypress run --config baseUrl=http://client:5173"]
+
+
 

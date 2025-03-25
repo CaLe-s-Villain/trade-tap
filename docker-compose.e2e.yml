@@ -1,24 +1,56 @@
-# docker-compose.e2e
+version: '3.8'
+
 services:
+  migrate:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh -c "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
+    environment:
+      - NODE_ENV=test
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/tradetap_test
+    networks:
+      - app-network
+
   client:
     command: npm run dev
+    healthcheck:
+      test: curl --fail http://localhost:5173 || exit 1
+      interval: 5s
+      retries: 5
+      start_period: 5s
+      timeout: 2s
 
   server:
     command: npm run dev
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:5001/health']
+      interval: 5s
+      retries: 5
+      start_period: 5s
+      timeout: 2s
 
   cypress:
     build:
       context: ./client
       dockerfile: Dockerfile.e2e
-    working_dir: /app
     depends_on:
       client:
-        condition: service_started
+        condition: service_healthy
       server:
         condition: service_healthy
     entrypoint: []
     environment:
       - CYPRESS_BASE_URL=http://client:5173
+    networks:
+      - app-network # ✅ This is crucial
     volumes:
       - ./client:/app
       - /app/node_modules
+
+networks:
+  app-network:
+    driver: bridge # ✅ If you're reusing the same network from main compose
