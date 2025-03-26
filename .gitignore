@@ -49,3 +49,4 @@ server/.migrated.lock
 
 # Vite
 .vite
+client/cypress/screenshots/backend-connect.cy.js/Backend Integration Test -- displays messages from the backend (failed).png

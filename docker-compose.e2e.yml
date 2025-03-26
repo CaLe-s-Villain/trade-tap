@@ -8,15 +8,20 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    command: sh -c "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
+    command: sh -c "npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
     environment:
       - NODE_ENV=test
       - DATABASE_URL=postgres://postgres:postgres@db:5432/tradetap_test
     networks:
       - app-network
+    restart: 'no'
+    profiles:
+      - init
 
   client:
     command: npm run dev
+    env_file:
+      - ./client/.env.e2e
     healthcheck:
       test: curl --fail http://localhost:5173 || exit 1
       interval: 5s
