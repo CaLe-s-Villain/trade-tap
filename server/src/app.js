@@ -24,7 +24,7 @@ app.get('/api', (req, res) => {
 app.get('/api/message', async (req, res) => {
   try {
     const msg = await Message.findOne();
-    res.json({ text: msg?.text || 'No message found' });
+    return res.json({ text: msg?.text || 'No message found' });
   } catch (err) {
     if (
       err.name === 'SequelizeDatabaseError' &&
@@ -37,9 +37,8 @@ app.get('/api/message', async (req, res) => {
     }
 
     console.error('❌ Unexpected error in /api/message:', err);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-58;
 
 module.exports = app;
