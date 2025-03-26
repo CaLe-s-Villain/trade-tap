@@ -18,13 +18,27 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api', (req, res) => {
-  console.log('hi mom');
   res.json({ message: 'Hello from backend' });
 });
 
 app.get('/api/message', async (req, res) => {
-  const msg = await Message.findOne();
-  res.json({ text: msg?.text || 'No message found' });
+  try {
+    const msg = await Message.findOne();
+    return res.json({ text: msg?.text || 'No message found' });
+  } catch (err) {
+    if (
+      err.name === 'SequelizeDatabaseError' &&
+      /relation .* does not exist/.test(err.message)
+    ) {
+      console.warn('⚠️ "Messages" table not found. Run migrations.');
+      return res
+        .status(503)
+        .json({ error: 'Service not ready: Messages table missing' });
+    }
+
+    console.error('❌ Unexpected error in /api/message:', err);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 module.exports = app;
