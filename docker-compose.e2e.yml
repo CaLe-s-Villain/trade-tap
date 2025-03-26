@@ -17,9 +17,14 @@ services:
     #   POSTGRES_DB: ${POSTGRES_DB}
     networks:
       - app-network
+    restart: 'no'
+    profiles:
+      - init
 
   client:
     command: npm run dev
+    env_file:
+      - ./client/.env.e2e
     healthcheck:
       test: curl --fail http://localhost:5173 || exit 1
       interval: 5s
