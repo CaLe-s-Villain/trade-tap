@@ -40,6 +40,5 @@ app.get('/api/message', async (req, res) => {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-58;
 
 module.exports = app;
