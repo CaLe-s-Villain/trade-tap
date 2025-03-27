@@ -1,60 +1,68 @@
-import { beforeEach, afterEach, test, expect, vi } from 'vitest';
+import express from 'express';
 import request from 'supertest';
-import app from '../src/app';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 
-// Import the whole models object
-import models from '../src/models';
+import messageRoutes from '../src/routes/message.routes.js';
 
-// Shortcut for cleaner access
-const { Message } = models;
+describe('Message API', () => {
+  let app;
+  let mockModels;
 
-afterEach(() => {
-  vi.restoreAllMocks();
-});
+  beforeEach(() => {
+    // Arrange: set up app and mock models
+    app = express();
+    app.use(express.json());
 
-test('GET /api/message/latest should return message text from DB', async () => {
-  // Arrange: Mock DB response for findOne
-  vi.spyOn(Message, 'findOne').mockResolvedValue({ text: 'Test message' });
+    mockModels = {
+      Message: {
+        findAll: vi.fn(),
+        findOne: vi.fn(),
+        create: vi.fn(),
+      },
+    };
 
-  // Act: Make the request
-  const response = await request(app).get('/api/message/latest');
+    // Load only the message routes with mocked models
+    app.use('/api/message', messageRoutes(mockModels));
+  });
 
-  // Assert: Check status and response
-  expect(response.status).toBe(200);
-  expect(response.body).toEqual({ text: 'Test message' });
-});
+  it('GET /api/message/latest should return message text from DB', async () => {
+    console.log(mockModels);
+    // Arrange
+    mockModels.Message.findOne.mockResolvedValue({ text: 'Test message' });
 
-test('GET /api/message/latest should return fallback if no message found', async () => {
-  // Arrange: Simulate no DB result
-  vi.spyOn(Message, 'findOne').mockResolvedValue(null);
+    // Act
+    const response = await request(app).get('/api/message/latest');
 
-  // Act
-  const response = await request(app).get('/api/message/latest');
+    // Assert
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ text: 'Test message' });
+  });
 
-  // Assert: Should return fallback message
-  expect(response.status).toBe(200);
-  expect(response.body).toEqual({ text: 'No message found' });
-});
+  it('GET /api/message/latest should return fallback if no message found', async () => {
+    // Arrange
+    mockModels.Message.findOne.mockResolvedValue(null);
 
-test('POST /api/message should create and return a new message', async () => {
-  const mockText = 'This is a new message';
-  const mockMessage = {
-    id: 1,
-    text: mockText,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+    // Act
+    const response = await request(app).get('/api/message/latest');
 
-  // Arrange: Mock Message.create
-  const createSpy = vi.spyOn(Message, 'create').mockResolvedValue(mockMessage);
+    // Assert
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ text: 'No message found' });
+  });
 
-  // Act
-  const response = await request(app)
-    .post('/api/message')
-    .send({ text: mockText });
+  it('POST /api/message should create and return a new message', async () => {
+    // Arrange
+    const mockText = 'This is a new message';
+    mockModels.Message.create.mockResolvedValue({ text: mockText });
 
-  // Assert
-  expect(response.status).toBe(201);
-  expect(response.body).toMatchObject({ text: mockText });
-  expect(createSpy).toHaveBeenCalledWith({ text: mockText });
+    // Act
+    const response = await request(app)
+      .post('/api/message')
+      .send({ text: mockText });
+
+    // Assert
+    expect(response.status).toBe(201);
+    expect(response.body).toMatchObject({ text: mockText });
+    expect(mockModels.Message.create).toHaveBeenCalledWith({ text: mockText });
+  });
 });

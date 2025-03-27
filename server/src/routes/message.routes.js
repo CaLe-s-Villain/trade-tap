@@ -26,7 +26,7 @@ module.exports = (Message) => {
 
   router.get('/latest', async (req, res) => {
     try {
-      console.log(Message);
+      // console.log(Message);
       const msg = await Message.findOne();
 
       return res.json({ text: msg?.text || 'No message found' });
