@@ -1,7 +1,7 @@
 // src/routes/message.routes.js
+const express = require('express');
+
 module.exports = (Message) => {
-  // const { Message } = models;
-  const express = require('express');
   const router = express.Router();
 
   router.get('/', async (req, res) => {

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import App from '../App';
-import { expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import userEvent from '@testing-library/user-event';
+import App from '../App';
 
 describe('App', () => {
   it('renders the app title', async () => {
