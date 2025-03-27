@@ -22,11 +22,10 @@ describe('Message API', () => {
     };
 
     // Load only the message routes with mocked models
-    app.use('/api/message', messageRoutes(mockModels));
+    app.use('/api/message', messageRoutes(mockModels.Message));
   });
 
   it('GET /api/message/latest should return message text from DB', async () => {
-    console.log(mockModels);
     // Arrange
     mockModels.Message.findOne.mockResolvedValue({ text: 'Test message' });
 

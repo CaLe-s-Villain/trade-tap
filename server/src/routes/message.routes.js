@@ -1,5 +1,6 @@
 // src/routes/message.routes.js
 module.exports = (Message) => {
+  // const { Message } = models;
   const express = require('express');
   const router = express.Router();
 
@@ -26,7 +27,6 @@ module.exports = (Message) => {
 
   router.get('/latest', async (req, res) => {
     try {
-      // console.log(Message);
       const msg = await Message.findOne();
 
       return res.json({ text: msg?.text || 'No message found' });
