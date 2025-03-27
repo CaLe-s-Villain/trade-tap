@@ -10,14 +10,16 @@ function App() {
   const [message, setMessage] = useState('...loading');
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/message`)
+    fetch(`${import.meta.env.VITE_API_URL}/message/latest`)
       .then((res) => res.json())
-      .then((data) => setMessage(data.text))
+      .then((data) => {
+        console.log(data);
+        return setMessage(data.text);
+      })
       .catch((err) => {
         console.log(err);
         setMessage('Backend unreachable 😢');
       });
-    console.log('Hi mommy');
   }, []);
 
   return (
