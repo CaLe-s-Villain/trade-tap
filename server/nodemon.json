@@ -1,4 +1,3 @@
 {
-  "watch": ["src"],
-  "exec": "npm start"
+  "watch": ["src"]
 }
