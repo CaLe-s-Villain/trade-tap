@@ -3,11 +3,13 @@ const cors = require('cors');
 const models = require('./models');
 const loadRoutes = require('./loadRoutes');
 
+require('dotenv').config(); // Load environment variables
+
 const app = express();
 
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: process.env.CLIENT_ORIGIN,
   }),
 );
 

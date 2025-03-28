@@ -4,7 +4,7 @@ describe('Message Flow', () => {
     const expectedMessage = 'Hello from backend';
 
     // Act: Visit the homepage
-    cy.visit('http://localhost:5173');
+    cy.visit('/');
 
     // Assert: Latest message appears
     cy.contains(expectedMessage).should('exist');
@@ -17,7 +17,7 @@ describe('Counter Feature', () => {
     const expectedInitialCount = 0;
 
     // Act: Initial count is shown correctly
-    cy.visit('http://localhost:5173');
+    cy.visit('/');
 
     // Assert
     cy.contains(expectedInitialCount).should('exist');
@@ -28,7 +28,7 @@ describe('Counter Feature', () => {
     const expectedCount = 'count is 2';
 
     // Act: Visit and click the counter button twice
-    cy.visit('http://localhost:5173');
+    cy.visit('/');
     cy.get('button')
       .contains(/count is \d+/i)
       .click()
