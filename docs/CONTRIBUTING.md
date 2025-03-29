@@ -246,6 +246,30 @@ git push origin <your-branch-name>
 
 ---
 
+## Using GitHub Auto-Merge for Low-Risk Changes
+
+GitHub auto-merge streamlines our workflow by automatically merging low-risk PRs (e.g., documentation, CI/CD config, chores) after all checks pass and reviews are approved.
+
+### How to Enable Auto-Merge:
+
+1. Ensure your PR is labeled with one or more of the following:
+
+   - `documentation`
+   - `ci/cd`
+   - `chore`
+
+2. After submitting your PR:
+   - Once all status checks pass and the required review(s) are approved, click the **"Enable auto-merge"** button in the PR.
+   - Select your preferred merge method (usually **Squash and merge**).
+   - GitHub will merge automatically once conditions are met.
+
+### Guidelines:
+
+- Use this feature only for PRs that pose minimal risk (no logic or functional changes).
+- Always double-check that the PR is correctly labeled and reviewed.
+
+---
+
 ## 🧪 Testing
 
 Before submitting your PR:
