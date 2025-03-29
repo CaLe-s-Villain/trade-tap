@@ -5,8 +5,8 @@ on:
     branches: [main, develop]
 
 jobs:
-  client-tests:
-    name: Run Client Tests
+  client-unit-tests:
+    name: Client Unit Tests (Vitest)
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -18,11 +18,11 @@ jobs:
           node-version: '20'
       - name: Install client dependencies
         run: npm install
-      - name: Run client unit tests (Vitest)
+      - name: Run client unit tests
         run: npm test
 
-  server-tests:
-    name: Run Server Tests
+  server-unit-tests:
+    name: Server Unit Tests (Vitest)
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -34,5 +34,18 @@ jobs:
           node-version: '20'
       - name: Install server dependencies
         run: npm install
-      - name: Run server unit tests (Vitest)
+      - name: Run server unit tests
         run: npm test
+
+  client-e2e-tests:
+    name: Client E2E Tests (Cypress)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install root dependencies
+        run: npm install
+      - name: Run Cypress E2E tests
+        run: npm run cypress:run
