@@ -1,20 +1,38 @@
-name: Placeholder Test Workflow
+name: Test Suite
 
 on:
   pull_request:
-    branches: [main, dev, stage]
-  push:
-    branches: [main, dev, stage]
+    branches: [main, develop]
 
 jobs:
-  client-tests:
+  test-client:
+    name: Run Client Tests
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
     steps:
-      - name: Placeholder - client tests
-        run: echo "Client tests not yet implemented."
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install client dependencies
+        run: npm install
+      - name: Run client unit tests (Vitest)
+        run: npm test
 
-  server-tests:
+  test-server:
+    name: Run Server Tests
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
     steps:
-      - name: Placeholder - server tests
-        run: echo "Server tests not yet implemented."
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install server dependencies
+        run: npm install
+      - name: Run server unit tests (Vitest)
+        run: npm test
