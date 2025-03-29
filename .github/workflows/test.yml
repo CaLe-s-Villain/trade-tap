@@ -5,7 +5,7 @@ on:
     branches: [main, develop]
 
 jobs:
-  test-client:
+  client-tests:
     name: Run Client Tests
     runs-on: ubuntu-latest
     defaults:
@@ -21,7 +21,7 @@ jobs:
       - name: Run client unit tests (Vitest)
         run: npm test
 
-  test-server:
+  server-tests:
     name: Run Server Tests
     runs-on: ubuntu-latest
     defaults:
