@@ -18,6 +18,8 @@
   "devDependencies": {
     "cross-env": "^7.0.3",
     "depcheck": "^1.4.7",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.0",
     "nodemon": "^3.1.9",
     "sequelize-cli": "^6.6.2",
     "supertest": "^7.1.0",
