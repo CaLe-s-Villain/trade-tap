@@ -226,6 +226,60 @@ Commit messages will be automatically validated during the commit process.
 
 ---
 
+## Temporary (WIP) Commits & Bypassing Hooks
+
+We use Husky and Commitlint to ensure code quality and commit message consistency.  
+However, occasionally during active development, you may need to commit incomplete work:
+
+### Making WIP (Work-in-Progress) Commits
+
+If you're working on a feature, fix, or test and must switch computers or request assistance, your commit may not pass tests or linting checks yet.
+
+In these scenarios, you can bypass commit checks temporarily:
+
+```bash
+git commit -m "wip: short description of temporary commit" --no-verify
+```
+
+### Guidelines for Using `--no-verify`:
+
+- Clearly mark the commit as `wip` (work-in-progress).
+- Use `--no-verify` explicitly to bypass Husky hooks and commit checks.
+- Avoid pushing WIP commits directly to primary branches (`main`, `develop`). Instead, use a feature branch.
+- Clean up and squash WIP commits later once the issue is resolved, and tests pass again.
+
+### Quick WIP Alias (Optional)
+
+If you often need WIP commits, consider adding a Git alias:
+
+```bash
+git config --global alias.wip 'commit --no-verify -m "wip: temporary commit"'
+```
+
+Now you can quickly commit using:
+
+```bash
+git wip
+```
+
+**Always ensure WIP commits are cleaned up before final PR merges.**
+
+````
+
+---
+
+## 🚩 **Commit and Document This Clearly**
+
+Once added, commit the updated documentation clearly:
+
+```bash
+git add CONTRIBUTING.md
+git commit -m "docs: clarify use of WIP commits and --no-verify for temporary commits"
+git push
+````
+
+---
+
 ## 🤝 Pull Request Guidelines
 
 1. Sync with the latest `dev` branch:

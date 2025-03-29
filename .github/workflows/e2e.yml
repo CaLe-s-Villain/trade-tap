@@ -1,0 +1,56 @@
+name: Cypress E2E Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  cypress-e2e:
+    name: Run Cypress End-to-End Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Install and build client
+      - name: Install Client Dependencies
+        working-directory: ./client
+        run: npm install
+
+      - name: Build Client
+        working-directory: ./client
+        run: npm run build
+
+      # Install server dependencies
+      - name: Install Server Dependencies
+        working-directory: ./server
+        run: npm install
+
+      # Start server and client concurrently in the background
+      - name: Start Server and Client
+        working-directory: ./server
+        run: npm run dev &
+
+      - name: Start Client
+        working-directory: ./client
+        run: npm run preview &
+
+      - name: Wait for services to start
+        run: sleep 10
+
+      # Run Cypress tests
+      - name: Install Cypress Dependencies
+        run: npm install
+
+      - name: Run Cypress E2E Tests
+        env:
+          CYPRESS_BASE_URL: ${{ secrets.CYPRESS_BASE_URL || 'http://localhost:5173' }}
+        run: npx cypress run
