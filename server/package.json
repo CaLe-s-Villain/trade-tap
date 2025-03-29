@@ -11,8 +11,8 @@
   "scripts": {
     "dev": "node dev.js",
     "start": "cross-env NODE_ENV=production node src/index.js",
-    "test": "cross-env NODE_ENV=test vitest --config vitest.config.js",
-    "test:watch": "vitest --watch",
+    "test": "cross-env NODE_ENV=test vitest run --config vitest.config.js",
+    "test:watch": "cross-env NODE_ENV=test vitest --watch --config vitest.config.js",
     "lint": "eslint src --ext .js"
   },
   "devDependencies": {

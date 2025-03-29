@@ -11,7 +11,10 @@
     "scripts:help": "echo 'Available scripts: lint, lint:fix, format, format:check'",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "npm run test:client && npm run test:server",
+    "test:client": "cd client && npm test",
+    "test:server": "cd server && npm test"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.0",
