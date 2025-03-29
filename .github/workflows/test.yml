@@ -2,7 +2,7 @@ name: Test Suite
 
 on:
   pull_request:
-    branches: [main, develop]
+    branches: [main, stage, dev]
 
 jobs:
   client-unit-tests:
