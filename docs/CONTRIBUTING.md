@@ -11,27 +11,21 @@ Welcome, and thanks for your interest in contributing to Trade & Tap! Whether it
 1. **Clone the repo**
 
 ```bash
-
 git clone https://github.com/CaLe-s-Villain/trade-tap
 
 cd trade-tap
-
 ```
 
 2. **Checkout the latest working branch**
 
 ```bash
-
 git checkout dev
-
 ```
 
 3. **Install dependencies**
 
 ```bash
-
 cd client && npm install && cd ../server && npm install
-
 ```
 
 4. **Set up environment variables**
@@ -39,21 +33,17 @@ cd client && npm install && cd ../server && npm install
 Copy the example files and fill in missing values:
 
 ```bash
-
 cp client/.env.example client/.env
 
 cp server/.env.example server/.env
-
 ```
 
 5. **Run the app locally**
 
 ```bash
-
 cd client && npm run dev
 
 cd server && npm run dev
-
 ```
 
 ---
@@ -202,23 +192,37 @@ All branches should start from the `dev` branch and follow this format:
 
 ---
 
-## ✅ Commit Messages
+## ✅ Commit Message Conventions
 
-Use clear, descriptive commit messages following the format:
+We follow the [Conventional Commits](https://www.conventionalcommits.org/) standard:
 
-```
-<alias>: short description
-```
+**Structure:**
 
-Examples:
+<type>(optional-scope): <description>
 
-```
-fix: correct login redirect behavior
+[optional body]
 
-docs: update API authentication guide
+[optional footer(s)]
 
-feat: add search filters to product listing
-```
+**Examples:**
+
+- `feat: add new user registration endpoint`
+- `fix(server): handle errors on invalid input`
+- `docs: update API usage instructions`
+
+### Types:
+
+- **feat**: New feature
+- **fix**: Bug fix
+- **docs**: Documentation changes
+- **style**: Formatting or code style changes (no logic changes)
+- **refactor**: Code restructuring without adding new features or fixing bugs
+- **perf**: Performance improvements
+- **test**: Adding or updating tests
+- **ci**: Changes to CI configuration
+- **chore**: General maintenance tasks
+
+Commit messages will be automatically validated during the commit process.
 
 ---
 
@@ -227,17 +231,13 @@ feat: add search filters to product listing
 1. Sync with the latest `dev` branch:
 
 ```bash
-
 git pull origin dev
-
 ```
 
 2. Push your branch:
 
 ```bash
-
 git push origin <your-branch-name>
-
 ```
 
 3. Open a pull request **into `dev`** with a clear title and description.
@@ -250,9 +250,8 @@ git push origin <your-branch-name>
 
 Before submitting your PR:
 
-- ✅ Lint your code with `npm run lint`
 - ✅ Run unit tests with `npm test`
-- ✅ Update or add tests where applicable (Jest, Cypress, etc.)
+- ✅ Update or add tests where applicable (Vitest, Cypress, etc.)
 
 ---
 
