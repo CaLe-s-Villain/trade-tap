@@ -17,7 +17,7 @@ jobs:
       - name: Enable corepack and npm workspaces
         run: |
           corepack enable
-          npm install
+          npm ci --ignore-scripts
 
   client-unit-tests:
     name: Client Unit Tests (Vitest)
@@ -30,7 +30,7 @@ jobs:
           node-version: '20'
 
       - name: Install all workspace dependencies
-        run: npm install
+        run: npm ci --ignore-scripts
 
       - name: Run client tests
         run: npm test --workspace client
@@ -46,7 +46,7 @@ jobs:
           node-version: '20'
 
       - name: Install all workspace dependencies
-        run: npm install
+        run: npm ci --ignore-scripts
 
       - name: Run server tests
         run: npm test --workspace server
@@ -62,7 +62,7 @@ jobs:
           node-version: '20'
 
       - name: Install all workspace dependencies
-        run: npm install
+        run: npm ci --ignore-scripts
 
       - name: Run linter
         run: npm run lint

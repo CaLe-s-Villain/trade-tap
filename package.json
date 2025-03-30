@@ -15,8 +15,9 @@
     "format:check": "prettier . --check",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "prepare": "husky install",
-    "scripts:help": "echo \"Available root scripts:\\n  dev           - Start both client and server concurrently\\n  test          - Run tests in both workspaces\\n  lint          - Lint both workspaces\\n  lint:fix      - Auto-fix lint issues in both workspaces\\n  format        - Format all files with Prettier\\n  format:check  - Check formatting without writing changes\\n  cypress:run   - Run Cypress E2E tests from root\\n  scripts:help  - Show this help message\""
+    "prepare": "node .husky/prepare.js",
+    "setup": "npm install && npx husky install",
+    "scripts:help": "sh .scripts/help.sh"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.0",
