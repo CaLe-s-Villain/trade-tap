@@ -1,24 +1,28 @@
 {
+  "name": "trade-tap",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
-    "lint": "npm run lint:client && npm run lint:server",
-    "lint:client": "eslint client/src --ext .js,.jsx",
-    "lint:server": "eslint server/src --ext .js",
-    "lint:fix": "npm run lint:client -- --fix && npm run lint:server -- --fix",
+    "dev": "concurrently \"npm run dev --workspace server\" \"npm run dev --workspace client\"",
+    "test": "npm test --workspace client && npm test --workspace server",
+    "lint": "npm run lint --workspace client && npm run lint --workspace server",
+    "lint:fix": "npm run lint --workspace client -- --fix && npm run lint --workspace server -- --fix",
     "format": "prettier --write .",
     "format:check": "prettier . --check",
-    "format:client": "prettier --check client/src",
-    "format:server": "prettier --check server/src",
-    "scripts:help": "echo 'Available scripts: lint, lint:fix, format, format:check'",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "prepare": "husky install",
-    "test": "npm run test:client && npm run test:server",
-    "test:client": "cd client && npm test",
-    "test:server": "cd server && npm test"
+    "prepare": "node .husky/prepare.js",
+    "setup": "npm install && npx husky install",
+    "scripts:help": "sh .scripts/help.sh"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",
+    "concurrently": "^8.2.2",
     "cypress": "^14.2.1",
     "dotenv": "^16.4.7",
     "eslint": "^8.57.0",
@@ -36,10 +40,10 @@
   },
   "lint-staged": {
     "client/**/*.{js,jsx}": [
-      "npm run lint:client -- --fix --quiet"
+      "npm run lint --workspace client -- --fix --quiet"
     ],
     "server/**/*.js": [
-      "npm run lint:server -- --fix --quiet"
+      "npm run lint --workspace server -- --fix --quiet"
     ],
     "**/*.{json,md}": [
       "npm run format"

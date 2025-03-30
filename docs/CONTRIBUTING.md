@@ -22,11 +22,13 @@ cd trade-tap
 git checkout dev
 ```
 
-3. **Install dependencies**
+3. **Install all dependencies from the root**
 
 ```bash
-cd client && npm install && cd ../server && npm install
+npm install
 ```
+
+This installs dependencies for both client/ and server/ using npm workspaces.
 
 4. **Set up environment variables**
 
@@ -38,12 +40,19 @@ cp client/.env.example client/.env
 cp server/.env.example server/.env
 ```
 
+Use `.env` files in both `client/` and `server/` as needed.
+
+- Backend (`server/.env`) must include:
+  - `DATABASE_URL`
+  - `JWT_SECRET`
+  - `NODE_ENV`
+
+Secrets for CI/CD (e.g., GitHub Actions) should be set using repository **Secrets**.
+
 5. **Run the app locally**
 
 ```bash
-cd client && npm run dev
-
-cd server && npm run dev
+npm run dev
 ```
 
 ---
@@ -268,18 +277,6 @@ git wip
 
 ---
 
-## 🚩 **Commit and Document This Clearly**
-
-Once added, commit the updated documentation clearly:
-
-```bash
-git add CONTRIBUTING.md
-git commit -m "docs: clarify use of WIP commits and --no-verify for temporary commits"
-git push
-````
-
----
-
 ## 🤝 Pull Request Guidelines
 
 1. Sync with the latest `dev` branch:
@@ -330,6 +327,9 @@ Before submitting your PR:
 
 - ✅ Run unit tests with `npm test`
 - ✅ Update or add tests where applicable (Vitest, Cypress, etc.)
+- Unit tests are written using **Vitest**
+- E2E tests are written using **Cypress**
+- CI runs all tests via GitHub Actions
 
 ---
 
@@ -341,6 +341,26 @@ We use **ESLint** and **Prettier** to enforce code consistency:
 - Use `npm run format` (if available) to auto-format your code.
 - Prefer clear, maintainable code over clever one-liners.
 - Keep functions small, purposeful, and well-named.
+
+---
+
+### 🚀 Scripts
+
+```md
+## Scripts
+
+All root scripts are workspace-aware and affect both `client/` and `server/`.
+
+| Command              | Description                                        |
+|----------------------|----------------------------------------------------|
+| `npm run dev`        | Starts both frontend and backend concurrently      |
+| `npm test`           | Runs unit tests in both workspaces (Vitest)        |
+| `npm run lint`       | Lints both client and server                       |
+| `npm run lint:fix`   | Auto-fixes lint issues in both workspaces          |
+| `npm run format`     | Formats the entire codebase using Prettier         |
+| `npm run format:check` | Checks formatting without applying changes       |
+| `npm run cypress:run`| Runs Cypress E2E tests from root                   |
+| `npm run scripts:help` | Prints available root-level commands             |
 
 ---
 
@@ -364,3 +384,4 @@ See `CODE_OF_CONDUCT.md` (if available) for more.
 Thanks again for contributing to Trade & Tap! 💜
 
 ---
+````
