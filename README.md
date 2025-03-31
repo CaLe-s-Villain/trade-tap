@@ -68,20 +68,28 @@ trade-tap/
 
 ---
 
-## 📜 Scripts
+### 🧰 Root-Level Scripts
 
 All root-level scripts are **workspace-aware**:
 
-| Command                | Description                                |
-| ---------------------- | ------------------------------------------ |
-| `npm run dev`          | Start client and server concurrently       |
-| `npm test`             | Run unit tests in both workspaces (Vitest) |
-| `npm run lint`         | Lint both workspaces                       |
-| `npm run lint:fix`     | Auto-fix lint issues in both workspaces    |
-| `npm run format`       | Format the codebase using Prettier         |
-| `npm run format:check` | Check formatting without writing changes   |
-| `npm run cypress:run`  | Run Cypress E2E tests                      |
-| `npm run scripts:help` | Show all available root-level scripts      |
+| Command                    | Description                                      |
+| -------------------------- | ------------------------------------------------ |
+| `npm run dev`              | Start client and server concurrently             |
+| `npm test`                 | Run unit tests in both workspaces (Vitest)       |
+| `npm run lint`             | Lint both workspaces                             |
+| `npm run lint:fix`         | Auto-fix lint issues in both workspaces          |
+| `npm run format`           | Format the codebase using Prettier               |
+| `npm run format:check`     | Check formatting without writing changes         |
+| `npm run cypress:run`      | Run Cypress E2E tests                            |
+| `npm run docker:dev`       | Start containers in detached mode (with rebuild) |
+| `npm run docker:dev:debug` | Start containers in foreground (with rebuild)    |
+| `npm run docker:down`      | Stop and remove containers and volumes           |
+| `npm run docker:reset`     | Full teardown and restart of Docker environment  |
+| `npm run scripts:help`     | Show all available root-level scripts            |
+
+---
+
+Let me know if you want this added to your README or `CONTRIBUTING.md` — or dropped into `.scripts/help.sh` to keep everything in sync.
 
 ---
 

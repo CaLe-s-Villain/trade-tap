@@ -17,7 +17,11 @@
     "cypress:run": "cypress run",
     "prepare": "node .husky/prepare.js",
     "setup": "npm install && npx husky install",
-    "scripts:help": "sh .scripts/help.sh"
+    "scripts:help": "sh .scripts/help.sh",
+    "docker:dev": "docker compose --env-file .env.docker up --build -d",
+    "docker:reset": "npm run docker:down && npm run docker:dev",
+    "docker:dev:debug": "docker compose --env-file .env.docker up --build",
+    "docker:down": "docker compose down -v"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.0",
