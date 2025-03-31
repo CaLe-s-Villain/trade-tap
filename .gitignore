@@ -1,6 +1,6 @@
 # 🔒 Sensitive files
 .env
-.env.*  # handles .env.development, .env.local, etc.
+.env.docker
 
 # 🧠 Dependency directories
 node_modules/

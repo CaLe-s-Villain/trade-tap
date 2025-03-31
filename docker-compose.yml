@@ -1,0 +1,57 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: trade-tap-db
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    env_file:
+      - .env.docker
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER}']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: trade-tap-server
+    ports:
+      - '5001:5001'
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env.docker
+    volumes:
+      - ./server:/app
+    command: >
+      sh -c "
+        ./scripts/wait-for-db.sh db 5432 &&
+        npx sequelize-cli db:migrate &&
+        npx sequelize-cli db:seed:all &&
+        npm run dev
+      "
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: trade-tap-client
+    ports:
+      - '5173:5173'
+    depends_on:
+      - server
+    env_file:
+      - .env.docker
+    volumes:
+      - ./client:/app
+
+volumes:
+  pgdata:

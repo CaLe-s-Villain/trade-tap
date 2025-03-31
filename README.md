@@ -85,6 +85,14 @@ All root-level scripts are **workspace-aware**:
 
 ---
 
+## 🧱 Docker-Based Development
+
+Trade & Tap supports containerized development using Docker and Docker Compose.
+
+See full setup instructions in CONTRIBUTING.md
+
+---
+
 ## 🧪 Testing
 
 | Type | Tool    | Location                                |
