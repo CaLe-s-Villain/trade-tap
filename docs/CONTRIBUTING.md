@@ -57,6 +57,99 @@ npm run dev
 
 ---
 
+## 🧱 Docker-Based Development
+
+Trade & Tap supports fully containerized development environments using Docker and Docker Compose. This ensures a consistent environment across macOS, Windows (WSL), and CI pipelines.
+
+### 🚀 Getting Started with Docker
+
+```bash
+# Start all services using Docker Compose
+docker-compose --env-file .env.docker up --build
+```
+
+➡️ This uses `.env.docker` (do **not** overwrite `.env`) to isolate Docker-specific configuration.
+
+### 🧰 Services Launched
+
+- **PostgreSQL** — official `postgres:15-alpine` image
+
+- **Server** (`server/`) — Express backend, auto-migrated and seeded
+
+- **Client** (`client/`) — React frontend (static build served with `serve`)
+
+### 🧬 Environment Overview
+
+Make sure your `.env.docker` includes:
+
+```dotenv
+# Database
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=dev_db
+POSTGRES_PORT=5432
+
+# Server
+PORT=5001
+CLIENT_ORIGIN=http://localhost:5173
+DATABASE_URL=postgres://postgres:postgres@db:5432/dev_db
+JWT_SECRET=supersecret
+```
+
+### ⚙️ What Happens on Startup
+
+- PostgreSQL boots first with a healthcheck.
+
+- The backend waits until the DB is ready.
+
+- Sequelize runs migrations and seeds inside the server container.
+
+- Frontend is built and served at `http://localhost:5173`.
+
+### 🧪 Sequelize Migrations & Seeds
+
+The backend auto-runs:
+
+```bash
+npx sequelize-cli db:migrate
+npx sequelize-cli db:seed:all
+```
+
+To run manually:
+
+```bash
+docker-compose exec server npx sequelize-cli db:migrate
+docker-compose exec server npx sequelize-cli db:seed:all
+```
+
+> ⚠️ Seeds only run when `NODE_ENV=development`.
+
+### 🌐 Access the App
+
+| Service | URL                                             |
+| ------- | ----------------------------------------------- |
+| Client  | [http://localhost:5173](http://localhost:5173/) |
+| Server  | [http://localhost:5001](http://localhost:5001/) |
+| PG DB   | Exposed on port 5432 (localhost)                |
+
+### 🔍 Debugging Tips
+
+- View logs: `docker-compose logs -f`
+
+- Rebuild clean: `docker-compose down -v && docker-compose up --build`
+
+- Access containers: `docker exec -it trade-tap-server sh`
+
+### 📦 Future Plans
+
+- Cypress service for containerized E2E tests
+
+- Optional staging builds with Compose overrides
+
+- Production-ready deployment stack
+
+---
+
 ## 🔄 General Project Workflow
 
 1. All work starts with a GitHub issue. If none exists, create one using the **issue template**.
@@ -274,7 +367,6 @@ git wip
 **Always ensure WIP commits are cleaned up before final PR merges.**
 
 ````
-
 ---
 
 ## 🤝 Pull Request Guidelines
@@ -283,7 +375,7 @@ git wip
 
 ```bash
 git pull origin dev
-```
+````
 
 2. Push your branch:
 
@@ -351,16 +443,16 @@ We use **ESLint** and **Prettier** to enforce code consistency:
 
 All root scripts are workspace-aware and affect both `client/` and `server/`.
 
-| Command              | Description                                        |
-|----------------------|----------------------------------------------------|
-| `npm run dev`        | Starts both frontend and backend concurrently      |
-| `npm test`           | Runs unit tests in both workspaces (Vitest)        |
-| `npm run lint`       | Lints both client and server                       |
-| `npm run lint:fix`   | Auto-fixes lint issues in both workspaces          |
-| `npm run format`     | Formats the entire codebase using Prettier         |
-| `npm run format:check` | Checks formatting without applying changes       |
-| `npm run cypress:run`| Runs Cypress E2E tests from root                   |
-| `npm run scripts:help` | Prints available root-level commands             |
+| Command                | Description                                   |
+| ---------------------- | --------------------------------------------- |
+| `npm run dev`          | Starts both frontend and backend concurrently |
+| `npm test`             | Runs unit tests in both workspaces (Vitest)   |
+| `npm run lint`         | Lints both client and server                  |
+| `npm run lint:fix`     | Auto-fixes lint issues in both workspaces     |
+| `npm run format`       | Formats the entire codebase using Prettier    |
+| `npm run format:check` | Checks formatting without applying changes    |
+| `npm run cypress:run`  | Runs Cypress E2E tests from root              |
+| `npm run scripts:help` | Prints available root-level commands          |
 
 ---
 
@@ -384,4 +476,4 @@ See `CODE_OF_CONDUCT.md` (if available) for more.
 Thanks again for contributing to Trade & Tap! 💜
 
 ---
-````
+```

@@ -31,7 +31,13 @@ services:
       - .env.docker
     volumes:
       - ./server:/app
-    command: npm run dev
+    command: >
+      sh -c "
+        ./scripts/wait-for-db.sh db 5432 &&
+        npx sequelize-cli db:migrate &&
+        npx sequelize-cli db:seed:all &&
+        npm run dev
+      "
 
   client:
     build:
@@ -46,7 +52,6 @@ services:
       - .env.docker
     volumes:
       - ./client:/app
-    command: npm run preview
 
 volumes:
   pgdata:
