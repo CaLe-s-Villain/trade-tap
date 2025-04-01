@@ -89,15 +89,11 @@ All root-level scripts are **workspace-aware**:
 
 ---
 
-Let me know if you want this added to your README or `CONTRIBUTING.md` — or dropped into `.scripts/help.sh` to keep everything in sync.
-
----
-
 ## 🧱 Docker-Based Development
 
 Trade & Tap supports containerized development using Docker and Docker Compose.
 
-See full setup instructions in CONTRIBUTING.md
+See full setup instructions in [CONTRIBUTING](./docs/CONTRIBUTING.md)
 
 ---
 
@@ -161,7 +157,7 @@ For CI/CD, secrets should be stored in **GitHub Secrets**, not committed.
 
 ## 🤝 Contributing
 
-We follow a strict branching, labeling, and PR workflow. Please see [`CONTRIBUTING.md`](./CONTRIBUTING.md) for full guidelines.
+We follow a strict branching, labeling, and PR workflow. Please see [`CONTRIBUTING.md`](./docs/CONTRIBUTING.md) for full guidelines.
 
 Highlights:
 
@@ -174,7 +170,7 @@ Highlights:
 
 ## 📘 Additional Resources
 
-- [CONTRIBUTING.md](./CONTRIBUTING.md) — full contribution guidelines
+- [CONTRIBUTING.md](./docs/CONTRIBUTING.md) — full contribution guidelines
 - `.env.example` files — base configuration
 - GitHub Issues — use templates for new bugs/features
 - Husky + Commitlint — for commit formatting & quality
