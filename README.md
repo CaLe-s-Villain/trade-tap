@@ -93,18 +93,41 @@ See full setup instructions in CONTRIBUTING.md
 
 ---
 
-## 🧪 Testing
+## ### 🧪 Test Types
 
-| Type | Tool    | Location                                |
-| ---- | ------- | --------------------------------------- |
-| Unit | Vitest  | `client/`, `server/`                    |
-| E2E  | Cypress | Root scripts, tests in `client/cypress` |
+| Type             | Location                                                           | Notes                                      |
+| ---------------- | ------------------------------------------------------------------ | ------------------------------------------ |
+| Unit Tests       | `client/__tests__/unit/`<br>`server/__tests__/unit/`               | Run in isolation, no external dependencies |
+| Integration      | `client/__tests__/integration/`<br>`server/__tests__/integration/` | Requires API/database (run dev or Docker)  |
+| End-to-End (E2E) | `cypress/e2e/`                                                     | Requires full app running (prefer Docker)  |
 
-To run all tests:
+---
+
+### 💻 Running Tests
 
 ```bash
-npm test               # unit tests
-npm run cypress:run    # E2E tests
+# Unit tests (no services needed)
+
+npm run test:unit
+
+# Integration tests (requires API + DB running)
+
+# Option 1: Locally
+
+npm run dev
+
+# Option 2: In Docker
+
+npm run docker:dev
+
+# Then run integration tests
+
+npm run test:integration
+
+# E2E Tests (prefer Docker)
+
+docker-compose up
+npm run test:e2e
 ```
 
 ---

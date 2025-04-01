@@ -49,3 +49,6 @@ server/.migrated.lock
 
 # Vite
 .vite
+
+# git
+diff.patch
