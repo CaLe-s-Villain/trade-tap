@@ -44,7 +44,6 @@ Use `.env` files in both `client/` and `server/` as needed.
 
 - Backend (`server/.env`) must include:
   - `DATABASE_URL`
-  - `JWT_SECRET`
   - `NODE_ENV`
 
 Secrets for CI/CD (e.g., GitHub Actions) should be set using repository **Secrets**.
@@ -65,10 +64,18 @@ Trade & Tap supports fully containerized development environments using Docker a
 
 ```bash
 # Start all services using Docker Compose
-docker-compose --env-file .env.docker up --build
+npm run docker:dev # docker-compose --env-file .env.docker up --build
+
 ```
 
 ➡️ This uses `.env.docker` (do **not** overwrite `.env`) to isolate Docker-specific configuration.
+
+```bash
+# other npm docker scripts
+npm run docker:down # docker compose down -v
+npm run docker:reset # npm run docker:down && npm run docker:dev
+npm run docker:dev:debug # docker compose --env-file .env.docker up --build
+```
 
 ### 🧰 Services Launched
 
@@ -83,17 +90,17 @@ docker-compose --env-file .env.docker up --build
 Make sure your `.env.docker` includes:
 
 ```dotenv
-# Database
+# Postgres
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_DB=dev_db
 POSTGRES_PORT=5432
+DB_HOST=db
 
 # Server
 PORT=5001
 CLIENT_ORIGIN=http://localhost:5173
 DATABASE_URL=postgres://postgres:postgres@db:5432/dev_db
-JWT_SECRET=supersecret
 ```
 
 ### ⚙️ What Happens on Startup
