@@ -8,8 +8,10 @@
     "build": "vite build",
     "preview": "vite preview --host --port 5173",
     "lint": "eslint src --ext .js,.jsx",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "test": "npm run test:unit && npm run test:integration",
+    "test:watch": "vitest --watch",
+    "test:unit": "vitest run __tests__/unit --passWithNoTests",
+    "test:integration": "vitest run __tests__/integration --passWithNoTests"
   },
   "dependencies": {
     "react": "^19.0.0",

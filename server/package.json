@@ -11,9 +11,11 @@
   "scripts": {
     "dev": "node dev.js",
     "start": "cross-env NODE_ENV=production node src/index.js",
-    "test": "cross-env NODE_ENV=test vitest run --config vitest.config.js",
-    "test:watch": "cross-env NODE_ENV=test vitest --watch --config vitest.config.js",
-    "lint": "eslint src --ext .js"
+    "lint": "eslint src --ext .js",
+    "test": "cross-env NODE_ENV=test vitest run",
+    "test:watch": "cross-env NODE_ENV=test vitest --watch",
+    "test:unit": "cross-env NODE_ENV=test vitest run __tests__/unit --passWithNoTests",
+    "test:integration": "cross-env NODE_ENV=test vitest run __tests__/integration --passWithNoTests"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

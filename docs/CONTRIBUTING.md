@@ -85,7 +85,7 @@ npm run docker:dev:debug # docker compose --env-file .env.docker up --build
 
 - **Client** (`client/`) — React frontend (static build served with `serve`)
 
-### 🧬 Environment Overview
+### 🧪 Environment Overview
 
 Make sure your `.env.docker` includes:
 
@@ -106,11 +106,8 @@ DATABASE_URL=postgres://postgres:postgres@db:5432/dev_db
 ### ⚙️ What Happens on Startup
 
 - PostgreSQL boots first with a healthcheck.
-
 - The backend waits until the DB is ready.
-
 - Sequelize runs migrations and seeds inside the server container.
-
 - Frontend is built and served at `http://localhost:5173`.
 
 ### 🧪 Sequelize Migrations & Seeds
@@ -142,17 +139,13 @@ docker-compose exec server npx sequelize-cli db:seed:all
 ### 🔍 Debugging Tips
 
 - View logs: `docker-compose logs -f`
-
 - Rebuild clean: `docker-compose down -v && docker-compose up --build`
-
 - Access containers: `docker exec -it trade-tap-server sh`
 
 ### 📦 Future Plans
 
-- Cypress service for containerized E2E tests
-
+- Cypress service for containerized E2E tests (in progress — for now, run Cypress locally using `npm run cypress:open`)
 - Optional staging builds with Compose overrides
-
 - Production-ready deployment stack
 
 ---
@@ -160,35 +153,24 @@ docker-compose exec server npx sequelize-cli db:seed:all
 ## 🔄 General Project Workflow
 
 1. All work starts with a GitHub issue. If none exists, create one using the **issue template**.
-
 2. Assign the correct **Realm** and one or more **Labels** (see below).
-
 3. A linked branch will be auto-created from the issue (if configured). If not, create one manually using the naming conventions below.
-
 4. All pull requests should target the `dev` branch.
-
 5. PRs must link to their issue using `Closes #<issue-number>` or similar phrasing.
 
 ---
 
-## 🪧 Creating New Issues
+## 🛧 Creating New Issues
 
 To create an issue:
 
 1. Go to the [Issues](https://github.com/CaLe-s-Villain/trade-tap/issues) tab.
-
 2. Click **New Issue** and select the appropriate template.
-
 3. Clearly describe:
-
-- What the issue is
-
-- Steps to reproduce (if applicable)
-
-- Suggested solution
-
+   - What the issue is
+   - Steps to reproduce (if applicable)
+   - Suggested solution
 4. Add the appropriate **Realm** and **Label(s)**
-
 5. Assign the issue to a milestone if relevant.
 
 _See the next section Writing Effective Issues Title for additional details_
@@ -205,31 +187,21 @@ To keep branch names clean and meaningful, issue titles should be:
 
 ### ✅ Good Examples
 
-| Purpose                        | Issue Title              | Resulting Branch Name           |
-
+| Purpose                        | Issue Title              | Resulting Branch Name           |
 | ------------------------------ | ------------------------ | ------------------------------- |
+| Add .env.example files         | `env-example-files`      | `docs/6-env-example-files`      |
+| Fix email validation bug       | `email-validation-bug`   | `bugfix/8-email-validation-bug` |
+| Add login authentication       | `login-auth`             | `feat/12-login-auth`            |
+| Improve homepage layout        | `homepage-layout-update` | `ui/14-homepage-layout-update`  |
+| Write tests for auth endpoints | `auth-endpoint-tests`    | `test/21-auth-endpoint-tests`   |
 
-| Add .env.example files         | `env-example-files`      | `docs/6-env-example-files`      |
+### ❌ Avoid
 
-| Fix email validation bug       | `email-validation-bug`   | `bugfix/8-email-validation-bug` |
-
-| Add login authentication       | `login-auth`             | `feat/12-login-auth`            |
-
-| Improve homepage layout        | `homepage-layout-update` | `ui/14-homepage-layout-update`  |
-
-| Write tests for auth endpoints | `auth-endpoint-tests`    | `test/21-auth-endpoint-tests`   |
-
-### 🚫 Avoid
-
-| Issue Title                             | Why it's bad                           |
-
+| Issue Title                             | Why it's bad                           |
 | --------------------------------------- | -------------------------------------- |
-
-| `Create .env.example files for the app` | Too long, includes unnecessary words   |
-
-| `Add login functionality to user auth`  | Redundant with label, overly verbose   |
-
-| `Fix bug where email isn’t validated`   | Could be shortened to just key concept |
+| `Create .env.example files for the app` | Too long, includes unnecessary words   |
+| `Add login functionality to user auth`  | Redundant with label, overly verbose   |
+| `Fix bug where email isn’t validated`   | Could be shortened to just key concept |
 
 > When in doubt, think: "If this title became part of a branch name, would it still be readable and useful?"
 
@@ -239,7 +211,7 @@ To keep branch names clean and meaningful, issue titles should be:
 
 We use **Realms** to define what area of the codebase an issue affects, and **Labels** to describe the type of work.
 
-### 🧭 Realms
+### 🛍️ Realms
 
 Apply one Realm per issue or PR:
 
@@ -249,23 +221,15 @@ Apply one Realm per issue or PR:
 
 ### 🏷️ Labels
 
-| Label           | Alias   | Description                                                  |
-
+| Label           | Alias   | Description                                                  |
 | --------------- | ------- | ------------------------------------------------------------ |
-
-| `bugfix`        | `fix`   | Fixes something that is broken                               |
-
-| `CI/CD`         | `ci-cd` | GitHub Actions, workflows, or deployment-related changes     |
-
-| `documentation` | `docs`  | Internal or user-facing documentation updates                |
-
-| `feature`       | `feat`  | New user-facing functionality or internal features           |
-
-| `performance`   | `perf`  | Optimizations or performance improvements                    |
-
-| `security`      | `sec`   | Security fixes, permission changes, or vulnerability patches |
-
-| `test`          | `test`  | Unit, integration, or end-to-end test additions/updates      |
+| `bugfix`        | `fix`   | Fixes something that is broken                               |
+| `CI/CD`         | `ci-cd` | GitHub Actions, workflows, or deployment-related changes     |
+| `documentation` | `docs`  | Internal or user-facing documentation updates                |
+| `feature`       | `feat`  | New user-facing functionality or internal features           |
+| `performance`   | `perf`  | Optimizations or performance improvements                    |
+| `security`      | `sec`   | Security fixes, permission changes, or vulnerability patches |
+| `test`          | `test`  | Unit, integration, or end-to-end test additions/updates      |
 
 > ℹ️ `wontfix` is internal-use only and should not be applied by contributors.
 
@@ -279,23 +243,15 @@ All branches should start from the `dev` branch and follow this format:
 <alias>/<short-description>
 ```
 
-| Label         | Alias   | Example Branch Name           |
-
+| Label         | Alias   | Example Branch Name           |
 | ------------- | ------- | ----------------------------- |
-
-| bugfix        | `fix`   | `fix/login-redirect`          |
-
-| CI/CD         | `ci-cd` | `ci-cd/update-dockerfile`     |
-
-| documentation | `docs`  | `docs/setup-guide-update`     |
-
-| feature       | `feat`  | `feat/product-search-filter`  |
-
-| performance   | `perf`  | `perf/db-index-optimizations` |
-
-| security      | `sec`   | `sec/auth-token-hardening`    |
-
-| test          | `test`  | `test/api-auth-tests`         |
+| bugfix        | `fix`   | `fix/login-redirect`          |
+| CI/CD         | `ci-cd` | `ci-cd/update-dockerfile`     |
+| documentation | `docs`  | `docs/setup-guide-update`     |
+| feature       | `feat`  | `feat/product-search-filter`  |
+| performance   | `perf`  | `perf/db-index-optimizations` |
+| security      | `sec`   | `sec/auth-token-hardening`    |
+| test          | `test`  | `test/api-auth-tests`         |
 
 > Note: If the issue didn’t auto-generate a branch, manually create one and link it in the GitHub issue’s "Development" section.
 
@@ -373,7 +329,6 @@ git wip
 
 **Always ensure WIP commits are cleaned up before final PR merges.**
 
-````
 ---
 
 ## 🤝 Pull Request Guidelines
@@ -382,7 +337,7 @@ git wip
 
 ```bash
 git pull origin dev
-````
+```
 
 2. Push your branch:
 
@@ -409,6 +364,7 @@ GitHub auto-merge streamlines our workflow by automatically merging low-risk PRs
    - `chore`
 
 2. After submitting your PR:
+
    - Once all status checks pass and the required review(s) are approved, click the **"Enable auto-merge"** button in the PR.
    - Select your preferred merge method (usually **Squash and merge**).
    - GitHub will merge automatically once conditions are met.
@@ -420,15 +376,19 @@ GitHub auto-merge streamlines our workflow by automatically merging low-risk PRs
 
 ---
 
-## 🧪 Testing
+## 🤪 Testing
 
 Before submitting your PR:
 
-- ✅ Run unit tests with `npm test`
-- ✅ Update or add tests where applicable (Vitest, Cypress, etc.)
-- Unit tests are written using **Vitest**
-- E2E tests are written using **Cypress**
-- CI runs all tests via GitHub Actions
+- ✅ Run unit tests: `npm test`
+- ✅ Run integration tests: `npm run test:integration` (per workspace)
+- ✅ Run E2E tests: `npm run cypress:run`
+- Unit & integration tests use **Vitest**
+- E2E tests use **Cypress**
+- Tests run in CI via **GitHub Actions**
+- Use `--passWithNoTests` in test scripts to prevent failures when test directories are temporarily empty
+
+> Empty test directories (like `__tests__/unit`) are preserved using `.gitkeep` files.
 
 ---
 
@@ -445,9 +405,6 @@ We use **ESLint** and **Prettier** to enforce code consistency:
 
 ### 🚀 Scripts
 
-```md
-## Scripts
-
 All root scripts are workspace-aware and affect both `client/` and `server/`.
 
 | Command                | Description                                   |
@@ -463,7 +420,13 @@ All root scripts are workspace-aware and affect both `client/` and `server/`.
 
 ---
 
-### 📘 Git Guide Need a refresher or stuck on a Git command? Check out our Awesome Git Guide for help with: _ Common commands (branching, merging, pushing, etc.) _ Glossary of terms like `rebase`, `HEAD`, and `upstream` \* Project-specific workflows (feature branches, syncing with `dev`, cleanup
+### 📘 Git Guide
+
+Need a refresher or stuck on a Git command? Check out our [Awesome Git Guide](awesome-git-guide.md) for help with:
+
+- Common commands (branching, merging, pushing, etc.)
+- Glossary of terms like `rebase`, `HEAD`, and `upstream`
+- Project-specific workflows (feature branches, syncing with `dev`, cleanup)
 
 ---
 
@@ -476,11 +439,10 @@ We’re building something awesome — together. Please help keep our space welc
 - Assume positive intent and ask questions when in doubt.
 - Help others when you can, and don’t hesitate to ask for help.
 
-See `CODE_OF_CONDUCT.md` (if available) for more.
+See `[CODE_OF_CONDUCT](code-of-conduct.md)` for more.
 
 ---
 
 Thanks again for contributing to Trade & Tap! 💜
 
 ---
-```

@@ -2,7 +2,7 @@ import express from 'express';
 import request from 'supertest';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
-import messageRoutes from '../src/routes/message.routes.js';
+import messageRoutes from '../../src/routes/message.routes.js';
 
 describe('Message API', () => {
   let app;
