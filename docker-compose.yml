@@ -6,7 +6,7 @@ services:
     container_name: trade-tap-db
     restart: unless-stopped
     ports:
-      - '5432:5432'
+      - '5433:5432' # Expose to host as 5433 to avoid conflicts with local Postgres
     env_file:
       - .env.docker
     volumes:
@@ -43,15 +43,15 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    container_name: trade-tap-client
     ports:
       - '5173:5173'
-    depends_on:
-      - server
-    env_file:
-      - .env.docker
     volumes:
       - ./client:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_BASE_URL=http://server:5001
+    depends_on:
+      - server
 
 volumes:
   pgdata:
