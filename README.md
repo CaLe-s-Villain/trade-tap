@@ -12,13 +12,17 @@ Welcome to **Trade & Tap** — a full-stack monorepo built with React (Vite), Ex
 
 - [Project Overview](#-project-overview)
 - [Quickstart](#-quickstart)
+- [Requirements](#-requirements)
+- [Installation](#-installation)
 - [Project Structure](#-project-structure)
 - [Scripts](#-scripts)
+- [Docker-Based Development](#-docker-based-development)
 - [Testing](#-testing)
 - [Environment Variables](#-environment-variables)
 - [Contributing](#-contributing)
 - [Additional Resources](#-additional-resources)
 - [Thanks](#-thanks)
+- [Built With](#-built-with)
 
 ---
 
@@ -28,9 +32,9 @@ Trade & Tap is a monorepo-based e-commerce platform built for small business use
 
 - **Frontend** (`client/`) — React 19 + Vite + Vitest
 - **Backend** (`server/`) — Express + Sequelize + PostgreSQL + Vitest
-- **Testing** — Vitest for unit tests, Cypress for E2E
+- **Testing** — Vitest for unit/integration, Cypress for E2E
 - **CI/CD** — GitHub Actions
-- **DevOps** — Workspace-aware scripts, Docker support (in progress)
+- **DevOps** — Workspace-aware scripts, Docker support
 
 ---
 
@@ -54,21 +58,49 @@ npm run dev
 
 ---
 
+## ✅ Requirements
+
+| Tool           | Version        | Installation Link                                     |
+| -------------- | -------------- | ----------------------------------------------------- |
+| Node.js        | 20.x           | [Install Node.js](https://nodejs.org/en/download)     |
+| npm            | 9.x or later   | Comes with Node.js                                    |
+| Git            | Latest stable  | [Install Git](https://git-scm.com/downloads)          |
+| Docker         | 24.x or later  | [Install Docker](https://docs.docker.com/get-docker/) |
+| Docker Compose | v2+ (built-in) | Included with Docker Desktop                          |
+
+---
+
+## 🔧 Installation
+
+After meeting the above requirements:
+
+```bash
+git clone https://github.com/CaLe-s-Villain/trade-tap.git
+cd trade-tap
+npm run setup
+```
+
+This installs all dependencies via `npm workspaces` and initializes Husky hooks.
+
+---
+
 ## 📦 Project Structure
 
 ```
 trade-tap/
-├── client/       # React frontend
-├── server/       # Express backend
-├── .github/      # GitHub Actions workflows
-├── .husky/       # Git hooks
-├── package.json  # Root with workspaces
-└── README.md     # This file
+├── client/        # React frontend
+├── server/        # Express backend
+├── .github/       # GitHub Actions workflows
+├── .husky/        # Git hooks
+├── .scripts/      # Custom script helpers (e.g., help.sh)
+├── docs/          # Contribution guides and references
+├── package.json   # Root config with workspaces
+└── README.md      # This file
 ```
 
 ---
 
-### 🧰 Root-Level Scripts
+## 🧰 Scripts
 
 All root-level scripts are **workspace-aware**:
 
@@ -81,6 +113,7 @@ All root-level scripts are **workspace-aware**:
 | `npm run format`           | Format the codebase using Prettier               |
 | `npm run format:check`     | Check formatting without writing changes         |
 | `npm run cypress:run`      | Run Cypress E2E tests                            |
+| `npm run cypress:open`     | Open Cypress GUI test runner                     |
 | `npm run docker:dev`       | Start containers in detached mode (with rebuild) |
 | `npm run docker:dev:debug` | Start containers in foreground (with rebuild)    |
 | `npm run docker:down`      | Stop and remove containers and volumes           |
@@ -91,46 +124,44 @@ All root-level scripts are **workspace-aware**:
 
 ## 🧱 Docker-Based Development
 
-Trade & Tap supports containerized development using Docker and Docker Compose.
-
-See full setup instructions in [CONTRIBUTING](./docs/CONTRIBUTING.md)
-
----
-
-## ### 🧪 Test Types
-
-| Type             | Location                                                           | Notes                                      |
-| ---------------- | ------------------------------------------------------------------ | ------------------------------------------ |
-| Unit Tests       | `client/__tests__/unit/`<br>`server/__tests__/unit/`               | Run in isolation, no external dependencies |
-| Integration      | `client/__tests__/integration/`<br>`server/__tests__/integration/` | Requires API/database (run dev or Docker)  |
-| End-to-End (E2E) | `cypress/e2e/`                                                     | Requires full app running (prefer Docker)  |
-
----
-
-### 💻 Running Tests
+Trade & Tap supports containerized dev with Docker and Compose v2. Use `.env.docker` for overrides.
 
 ```bash
-# Unit tests (no services needed)
-
-npm run test:unit
-
-# Integration tests (requires API + DB running)
-
-# Option 1: Locally
-
-npm run dev
-
-# Option 2: In Docker
-
+# Start services in background
 npm run docker:dev
 
-# Then run integration tests
+# Stop and clean up
+npm run docker:down
+```
 
+See [`docs/CONTRIBUTING.md`](./docs/CONTRIBUTING.md) for more.
+
+---
+
+## 🧪 Testing
+
+### Test Types
+
+| Type          | Location                                                         | Notes                                   |
+| ------------- | ---------------------------------------------------------------- | --------------------------------------- |
+| Unit Tests    | `client/__tests__/unit/`, `server/__tests__/unit/`               | Run in isolation                        |
+| Integration   | `client/__tests__/integration/`, `server/__tests__/integration/` | Requires API/DB                         |
+| E2E (Cypress) | `cypress/e2e/`                                                   | Full system test (via Docker preferred) |
+
+---
+
+### Running Tests
+
+```bash
+# Unit tests
+npm run test:unit
+
+# Integration (requires API/DB)
+npm run docker:dev
 npm run test:integration
 
-# E2E Tests (prefer Docker)
-
-docker-compose up
+# E2E Tests
+npm run docker:dev
 npm run test:e2e
 ```
 
@@ -138,50 +169,47 @@ npm run test:e2e
 
 ## 🔐 Environment Variables
 
-Environment variables are required in both `client/` and `server/`. Use the provided example files:
-
 ```bash
 cp client/.env.example client/.env
 cp server/.env.example server/.env
 ```
 
-Required keys for `server/.env`:
+Required keys in `server/.env`:
 
 - `DATABASE_URL`
 - `JWT_SECRET`
 - `NODE_ENV`
 
-For CI/CD, secrets should be stored in **GitHub Secrets**, not committed.
+For CI, secrets must be stored in **GitHub Secrets**.
 
 ---
 
 ## 🤝 Contributing
 
-We follow a strict branching, labeling, and PR workflow. Please see [`CONTRIBUTING.md`](./docs/CONTRIBUTING.md) for full guidelines.
+We follow structured development practices. See [`docs/CONTRIBUTING.md`](./docs/CONTRIBUTING.md) for:
 
-Highlights:
-
-- Branch from `dev`
-- Use issue-linked branches (e.g. `feat/67-new-feature`)
-- Follow [Conventional Commits](https://www.conventionalcommits.org/)
-- Auto-merge available for low-risk PRs
+- Branch naming and workflow
+- Issue templates
+- PR checklist
+- Testing before merge
+- GitHub auto-merge for docs, CI, chores
 
 ---
 
 ## 📘 Additional Resources
 
-- [CONTRIBUTING.md](./docs/CONTRIBUTING.md) — full contribution guidelines
-- `.env.example` files — base configuration
-- GitHub Issues — use templates for new bugs/features
-- Husky + Commitlint — for commit formatting & quality
+- [docs/CONTRIBUTING.md](./docs/CONTRIBUTING.md)
+- `.env.example` files
+- GitHub Issues & Labels
+- Script reference: `npm run scripts:help`
 
 ---
 
 ## 🫶 Thanks
 
-Thanks for checking out **Trade & Tap** — we welcome feedback, contributors, and collaborators!
+Thanks for checking out **Trade & Tap** — contributors are always welcome!
 
-If you have questions, ideas, or bugs to report, open an issue or join the discussion.
+If you have questions, ideas, or feedback, [open an issue](https://github.com/CaLe-s-Villain/trade-tap/issues).
 
 ---
 
