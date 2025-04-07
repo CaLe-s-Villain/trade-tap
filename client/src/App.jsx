@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
+
 import reactLogo from './assets/react.svg';
+
 // eslint-disable-next-line import/no-unresolved, import/no-absolute-path
 import viteLogo from '/vite.svg';
 
@@ -10,14 +12,21 @@ function App() {
   const [message, setMessage] = useState('...loading');
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/message/latest`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        return setMessage(data.text);
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/message/latest`)
+      .then(async (res) => {
+        const text = await res.text();
+        console.log('Raw response:', text);
+        try {
+          const json = JSON.parse(text);
+          console.log(json);
+          setMessage(json.text);
+        } catch (parseErr) {
+          console.error('Failed to parse JSON:', parseErr);
+          setMessage('Invalid response from backend 😢');
+        }
       })
       .catch((err) => {
-        console.log(err);
+        console.log('Fetch failed:', err); // line 20
         setMessage('Backend unreachable 😢');
       });
   }, []);

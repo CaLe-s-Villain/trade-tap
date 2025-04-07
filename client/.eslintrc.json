@@ -14,13 +14,38 @@
   "settings": {
     "import/resolver": {
       "alias": {
-        "map": [["", "./public"]],
+        "map": [["@", "./src"]],
         "extensions": [".js", ".jsx", ".json"]
+      },
+      "node": {
+        "moduleDirectory": ["node_modules", "../../node_modules"]
       }
     }
   },
   "rules": {
+    "no-console": "warn",
     "react/react-in-jsx-scope": "off",
-    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
-  }
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true,
+        "packageDir": ["./", "../../"]
+      }
+    ],
+    "import/extensions": "off"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.js", "**/*.test.jsx", "**/__tests__/**/*.js"],
+      "globals": {
+        "describe": "readonly",
+        "it": "readonly",
+        "test": "readonly",
+        "expect": "readonly",
+        "vi": "readonly",
+        "beforeEach": "readonly",
+        "afterEach": "readonly"
+      }
+    }
+  ]
 }

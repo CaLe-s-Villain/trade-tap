@@ -1,13 +1,13 @@
-const dotenv = require('dotenv');
+// Load environment variables from the correct file
+require('./config/env');
+
+console.log(`[env] SERVER_PORT is: ${process.env.SERVER_PORT}`);
+
 const app = require('./app');
 
-dotenv.config({
-  path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
-});
-
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.SERVER_PORT || 5001;
 
 app.listen(PORT, () => {
-  // TODO: make this a log entry instead of console
+  // TODO: Replace with proper logger later
   console.log(`🚀 Server running on port ${PORT}`);
 });
