@@ -3,8 +3,9 @@ const cors = require('cors');
 const models = require('./models');
 const loadRoutes = require('./loadRoutes');
 
-require('dotenv').config(); // Load environment variables
-
+require('dotenv').config();
+// Load environment variables
+console.log(`Client Origin: ${process.env.CLIENT_ORIGIN}`);
 const app = express();
 
 app.use(

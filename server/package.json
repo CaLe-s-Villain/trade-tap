@@ -1,5 +1,16 @@
 {
+  "name": "server",
+  "private": true,
   "type": "commonjs",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development node dev.js",
+    "start": "cross-env NODE_ENV=production node src/index.js",
+    "lint": "eslint src --ext .js || true",
+    "test": "cross-env NODE_ENV=test vitest run",
+    "test:watch": "cross-env NODE_ENV=test vitest --watch",
+    "test:unit": "cross-env NODE_ENV=test vitest run __tests__/unit --passWithNoTests",
+    "test:integration": "cross-env NODE_ENV=test vitest run __tests__/integration --passWithNoTests"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -8,26 +19,12 @@
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.6"
   },
-  "scripts": {
-    "dev": "node dev.js",
-    "start": "cross-env NODE_ENV=production node src/index.js",
-    "lint": "eslint src --ext .js",
-    "test": "cross-env NODE_ENV=test vitest run",
-    "test:watch": "cross-env NODE_ENV=test vitest --watch",
-    "test:unit": "cross-env NODE_ENV=test vitest run __tests__/unit --passWithNoTests",
-    "test:integration": "cross-env NODE_ENV=test vitest run __tests__/integration --passWithNoTests"
-  },
   "devDependencies": {
     "cross-env": "^7.0.3",
     "depcheck": "^1.4.7",
-    "husky": "^9.1.7",
-    "lint-staged": "^15.5.0",
     "nodemon": "^3.1.9",
     "sequelize-cli": "^6.6.2",
     "supertest": "^7.1.0",
     "vitest": "^3.0.9"
-  },
-  "jest": {
-    "testEnvironment": "node"
   }
 }
