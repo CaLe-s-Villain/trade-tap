@@ -16,42 +16,47 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+    networks:
+      - app
 
   server:
     build:
-      context: ./server
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: server/Dockerfile
     container_name: trade-tap-server
     ports:
       - '5001:5001'
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - app
     env_file:
       - .env.docker
     volumes:
-      - ./server:/app
+      - /app/node_modules
     command: >
-      sh -c "
-        ./scripts/wait-for-db.sh db 5432 &&
-        npx sequelize-cli db:migrate &&
-        npx sequelize-cli db:seed:all &&
-        npm run dev
-      "
+      sh -c "sh /app/server/scripts/wait-for-db.sh db 5432 &&  npx sequelize-cli db:migrate &&
+        npx sequelize-cli db:seed:all &&npm run dev"
 
   client:
     build:
-      context: ./client
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: client/Dockerfile
     ports:
       - '5173:5173'
     volumes:
-      - ./client:/app
       - /app/node_modules
-    environment:
-      - VITE_API_BASE_URL=http://server:5001
+    env_file:
+      - .env.docker
     depends_on:
       - server
+    networks:
+      - app
 
 volumes:
   pgdata:
+
+networks:
+  app:
+    driver: bridge

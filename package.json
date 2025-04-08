@@ -18,10 +18,10 @@
     "cypress:run": "cypress run",
     "prepare": "node .husky/prepare.js",
     "setup": "npm install && npx husky install",
-    "scripts:help": "sh .scripts/help.sh",
-    "docker:dev": "bash .scripts/docker-check.sh up --build -d",
-    "docker:dev:debug": "bash .scripts/docker-check.sh up --build",
-    "docker:down": "bash .scripts/docker-check.sh down -v",
+    "scripts:help": "sh scripts/help.sh",
+    "docker:dev": "bash scripts/docker-check.sh up --build -d",
+    "docker:dev:debug": "bash scripts/docker-check.sh up --build",
+    "docker:down": "bash scripts/docker-check.sh down -v",
     "docker:reset": "npm run docker:down && npm run docker:dev",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "npm run test:unit:client && npm run test:unit:server",
@@ -35,12 +35,14 @@
     "test:watch:server": "npm run test:watch --workspace=server",
     "test:e2e": "cypress run"
   },
+  "dependencies": {
+    "dotenv": "^16.4.7"
+  },
   "devDependencies": {
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",
     "concurrently": "^8.2.2",
     "cypress": "^14.2.1",
-    "dotenv": "^16.4.7",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -50,7 +52,7 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-react": "^7.37.4",
-    "husky": "^8.0.0",
+    "husky": "^9.1.7",
     "lint-staged": "^15.5.0",
     "prettier": "^3.5.3"
   },

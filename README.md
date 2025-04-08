@@ -92,7 +92,7 @@ trade-tap/
 ├── server/        # Express backend
 ├── .github/       # GitHub Actions workflows
 ├── .husky/        # Git hooks
-├── .scripts/      # Custom script helpers (e.g., help.sh)
+├── scripts/      # Custom script helpers (e.g., help.sh)
 ├── docs/          # Contribution guides and references
 ├── package.json   # Root config with workspaces
 └── README.md      # This file
@@ -173,12 +173,6 @@ npm run test:e2e
 cp client/.env.example client/.env
 cp server/.env.example server/.env
 ```
-
-Required keys in `server/.env`:
-
-- `DATABASE_URL`
-- `JWT_SECRET`
-- `NODE_ENV`
 
 For CI, secrets must be stored in **GitHub Secrets**.
 

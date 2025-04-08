@@ -40,12 +40,6 @@ cp client/.env.example client/.env
 cp server/.env.example server/.env
 ```
 
-Use `.env` files in both `client/` and `server/` as needed.
-
-- Backend (`server/.env`) must include:
-  - `DATABASE_URL`
-  - `NODE_ENV`
-
 Secrets for CI/CD (e.g., GitHub Actions) should be set using repository **Secrets**.
 
 5. **Run the app locally**
@@ -100,7 +94,6 @@ DB_HOST=db
 # Server
 PORT=5001
 CLIENT_ORIGIN=http://localhost:5173
-DATABASE_URL=postgres://postgres:postgres@db:5432/dev_db
 ```
 
 ### ⚙️ What Happens on Startup

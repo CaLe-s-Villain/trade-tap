@@ -1,4 +1,6 @@
-require('dotenv').config();
+require('dotenv').config({
+  path: require('path').resolve(__dirname, '../../../.env'), // <== go up 3 levels
+});
 
 module.exports = {
   development: {
@@ -6,7 +8,7 @@ module.exports = {
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DB,
     host: process.env.DB_HOST,
-    port: 5432,
+    port: Number(process.env.POSTGRES_PORT),
     dialect: 'postgres',
   },
   test: {
@@ -14,7 +16,7 @@ module.exports = {
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DB,
     host: process.env.DB_HOST,
-    port: 5432,
+    port: Number(process.env.POSTGRES_PORT),
     dialect: 'postgres',
   },
   production: {
@@ -22,7 +24,7 @@ module.exports = {
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DB,
     host: process.env.DB_HOST,
-    port: 5432,
+    port: Number(process.env.POSTGRES_PORT),
     dialect: 'postgres',
   },
 };
