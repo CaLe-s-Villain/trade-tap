@@ -50,4 +50,5 @@ server/.migrated.lock
 # Vite
 .vite
 
-# git
+# git.actrc
+.actrc
