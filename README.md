@@ -190,6 +190,20 @@ We follow structured development practices. See [`docs/CONTRIBUTING.md`](./docs/
 
 ---
 
+### 🧠 GitHub Issue → Branch Automation
+
+When an issue is **assigned**, an appropriate branch is automatically created based on:
+
+- Issue number
+- Shortened slugified title (e.g., `feat/42-login-flow`)
+- First matching label (e.g., `feature`, `bugfix`, `docs`, etc.)
+
+#### To regenerate a branch:
+
+Comment `/recreate-branch` on the issue.
+
+## This will recreate the branch based on the latest `dev` state and overwrite the existing remote branch (if any).
+
 ## 📘 Additional Resources
 
 - [docs/CONTRIBUTING.md](./docs/CONTRIBUTING.md)

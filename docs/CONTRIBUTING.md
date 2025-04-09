@@ -147,7 +147,10 @@ docker-compose exec server npx sequelize-cli db:seed:all
 
 1. All work starts with a GitHub issue. If none exists, create one using the **issue template**.
 2. Assign the correct **Realm** and one or more **Labels** (see below).
-3. A linked branch will be auto-created from the issue (if configured). If not, create one manually using the naming conventions below.
+3. A branch will be automatically created when the issue is assigned and has a valid label (e.g., `feature`, `bugfix`, etc.).
+   - If no branch is auto-created, you can create one manually using the naming conventions below.
+   - To update the base or restart from the latest `dev`, comment `/recreate-branch` on the issue to regenerate the branch.
+   - 🛑 **Note:** Only the first valid work label is used (`feature`, `bugfix`, etc.). If multiple labels apply, ensure the desired one is listed first.
 4. All pull requests should target the `dev` branch.
 5. PRs must link to their issue using `Closes #<issue-number>` or similar phrasing.
 

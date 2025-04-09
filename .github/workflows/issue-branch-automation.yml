@@ -1,31 +1,36 @@
-name: Auto-Create Branch on Label Assignment
+name: Auto-Create or Recreate Branch
 
 on:
   issues:
-    types: [labeled, unlabeled]
+    types: [assigned]
+  issue_comment:
+    types: [created]
 
 jobs:
   create-branch:
+    if: |
+      github.event.action == 'assigned' ||
+      (github.event.action == 'created' && github.event.comment.body == '/recreate-branch')
     runs-on: ubuntu-latest
     steps:
-      - name: Check if issue contains `wontfix`
-        id: check-wontfix
-        run: |
-          if [[ "$(jq -r '.issue.labels[].name' "$GITHUB_EVENT_PATH")" == *"wontfix"* ]]; then
-            echo "Branch creation skipped due to wontfix label."
-            exit 0
-          fi
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Extract labels and determine branch type
-        id: determine-branch
+      - name: Setup and branch logic
+        id: setup
         run: |
-          echo "🔍 Extracting labels and building branch name..."
+          echo "🔍 Determining branch name and label..."
+
+          ISSUE_NUMBER="${{ github.event.issue.number }}"
+          ISSUE_TITLE_RAW="${{ github.event.issue.title }}"
+          COMMENT_TRIGGER="${{ github.event.comment.body }}"
+          STOP_WORDS=("create" "add" "fix" "update" "for" "to" "the" "a" "an" "of" "with" "is" "on" "in" "project")
+
+          # Pull all labels and filter for priority
+          LABELS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "${{ github.event.issue.url }}" | jq -r '.labels[].name' | tr '[:upper:]' '[:lower:]')
+
           PRIORITY_LABELS=("hotfix" "ci/cd" "feature" "bugfix" "security" "performance" "documentation" "test")
-          LABELS=$(jq -r '.issue.labels[].name' "$GITHUB_EVENT_PATH" | tr '[:upper:]' '[:lower:]')
-
-          echo "Labels on issue:"
-          echo "$LABELS"
-
           SELECTED_LABEL=""
           for label in "${PRIORITY_LABELS[@]}"; do
             if echo "$LABELS" | grep -q "$label"; then
@@ -35,21 +40,14 @@ jobs:
           done
 
           if [[ -z "$SELECTED_LABEL" ]]; then
-            echo "❌ No valid work label found. Exiting."
+            echo "❌ No valid label found. Exiting."
+            echo "skip=true" >> $GITHUB_OUTPUT
             exit 0
           fi
 
-          ISSUE_NUMBER=$(jq -r '.issue.number' "$GITHUB_EVENT_PATH")
-          ISSUE_TITLE_RAW=$(jq -r '.issue.title' "$GITHUB_EVENT_PATH")
-          STOP_WORDS=("create" "add" "fix" "update" "for" "to" "the" "a" "an" "of" "with" "is" "on" "in")
-
-          # Normalize title
+          # Slugify title
           CLEAN_TITLE=$(echo "$ISSUE_TITLE_RAW" | tr '[:upper:]' '[:lower:]')
-
-          # Replace spaces and non-alphanumeric characters
           WORDS=($(echo "$CLEAN_TITLE" | tr -cd '[:alnum:] [:space:]-' | tr ' ' '\n'))
-
-          # Filter stopwords and shorten
           SHORTENED=()
           for word in "${WORDS[@]}"; do
             skip=false
@@ -59,10 +57,9 @@ jobs:
             $skip || SHORTENED+=("$word")
             [[ ${#SHORTENED[@]} -ge 4 ]] && break
           done
-
           SLUG=$(IFS=- ; echo "${SHORTENED[*]}")
 
-          # Map full label to short alias
+          # Label alias to branch prefix
           case "$SELECTED_LABEL" in
             feature)       SAFE_LABEL="feat" ;;
             bugfix)        SAFE_LABEL="fix" ;;
@@ -75,34 +72,44 @@ jobs:
           esac
 
           BRANCH_NAME="${SAFE_LABEL}/${ISSUE_NUMBER}-${SLUG}"
-
-          echo "✅ Branch name to be created: $BRANCH_NAME"
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
+          echo "skip=false" >> $GITHUB_OUTPUT
 
       - name: Check if branch already exists
         id: check-branch
+        if: steps.setup.outputs.skip != 'true'
         run: |
           if git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; then
-            echo "Branch $BRANCH_NAME already exists. No action needed."
-            exit 0
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Create and push new branch
+      - name: Create and push branch
+        if: steps.setup.outputs.skip != 'true' && (github.event.action == 'assigned' && steps.check-branch.outputs.exists == 'false') || github.event.comment.body == '/recreate-branch'
         run: |
-          if [[ -z "$BRANCH_NAME" ]]; then
-            echo "❌ BRANCH_NAME is empty. Aborting branch creation."
-            exit 1
-          fi
-
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin dev
+          git checkout origin/dev
           git checkout -b "$BRANCH_NAME"
           git push https://x-access-token:${{ secrets.ACTIONS_PAT }}@github.com/${{ github.repository }}.git "$BRANCH_NAME"
 
-      - name: Comment on issue with branch info
+      - name: Comment on issue
+        if: steps.setup.outputs.skip != 'true'
         run: |
-          ISSUE_URL=$(jq -r '.issue.comments_url' "$GITHUB_EVENT_PATH")
-          curl -s -X POST -H "Authorization: token ${{ secrets.ACTIONS_PAT }}"           -d '{"body": "🚀 A new branch has been created: `'"$BRANCH_NAME"'`"}'           "$ISSUE_URL"
+          COMMENT_URL="${{ github.event.issue.comments_url }}"
+          MESSAGE=""
+
+          if [[ "${{ github.event.comment.body }}" == "/recreate-branch" ]]; then
+            MESSAGE="🔄 Recreated branch: \`$BRANCH_NAME\`"
+          elif [[ "${{ steps.check-branch.outputs.exists }}" == "true" ]]; then
+            MESSAGE="✅ Branch already exists: \`$BRANCH_NAME\` — comment \`/recreate-branch\` if you want to refresh it."
+          else
+            MESSAGE="🚀 Branch created from \`dev\`: \`$BRANCH_NAME\`"
+          fi
+
+          curl -s -X POST \
+            -H "Authorization: token ${{ secrets.ACTIONS_PAT }}" \
+            -d "{\"body\": \"$MESSAGE\"}" \
+            "$COMMENT_URL"
